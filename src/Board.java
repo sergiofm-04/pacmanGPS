@@ -5,6 +5,8 @@ import java.awt.event.*;
 public class Board extends JPanel implements ActionListener {
     private static final int RESPAWN_DELAY_MS = 1000;
     private static final int STATUS_PANEL_HEIGHT = 40;
+    private static final Color GHOST_HOUSE_FILL = new Color(100, 50, 150);
+    private static final Color GHOST_HOUSE_BORDER = new Color(150, 100, 200);
     
     private Timer timer;
     private Pacman pacman;
@@ -19,10 +21,11 @@ public class Board extends JPanel implements ActionListener {
     private int[] ghostStartX;
     private int[] ghostStartY;
     
-    // 0 = espacio vacío, 1 = pared, 2 = punto
+    // 0 = empty space, 1 = wall, 2 = point, 3 = ghost house
     private static final int EMPTY = 0;
     private static final int WALL = 1;
     private static final int POINT = 2;
+    private static final int GHOST_HOUSE = 3;
 
     public Board() {
         setFocusable(true);
@@ -49,8 +52,8 @@ public class Board extends JPanel implements ActionListener {
             {1,2,2,2,2,1,2,2,2,1,1,2,2,2,1,2,2,2,2,1},
             {1,1,1,1,2,1,1,1,0,1,1,0,1,1,1,2,1,1,1,1},
             {1,1,1,1,2,1,0,0,0,0,0,0,0,0,1,2,1,1,1,1},
-            {1,1,1,1,2,1,0,1,1,0,0,1,1,0,1,2,1,1,1,1},
-            {0,0,0,0,2,0,0,1,0,0,0,0,1,0,0,2,0,0,0,0},
+            {1,1,1,1,2,1,0,1,1,3,3,1,1,0,1,2,1,1,1,1},
+            {0,0,0,0,2,0,0,1,3,3,3,3,1,0,0,2,0,0,0,0},
             {1,1,1,1,2,1,0,1,1,1,1,1,1,0,1,2,1,1,1,1},
             {1,1,1,1,2,1,0,0,0,0,0,0,0,0,1,2,1,1,1,1},
             {1,1,1,1,2,1,0,1,1,1,1,1,1,0,1,2,1,1,1,1},
@@ -73,8 +76,8 @@ public class Board extends JPanel implements ActionListener {
             {1,2,1,1,1,2,2,2,2,1,1,2,2,2,2,1,1,1,2,1},
             {1,2,1,1,1,1,1,1,2,1,1,2,1,1,1,1,1,1,2,1},
             {1,2,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,2,2,1},
-            {1,1,1,2,1,1,1,1,0,0,0,0,1,1,1,2,1,1,1,1},
-            {1,1,1,2,1,0,0,0,0,0,0,0,0,0,1,2,1,1,1,1},
+            {1,1,1,2,1,1,1,1,0,3,3,0,1,1,1,2,1,1,1,1},
+            {1,1,1,2,1,0,0,0,3,3,3,3,0,0,1,2,1,1,1,1},
             {1,2,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,2,2,1},
             {1,2,1,1,1,1,1,1,2,1,1,2,1,1,1,1,1,1,2,1},
             {1,2,1,1,1,2,2,2,2,1,1,2,2,2,2,1,1,1,2,1},
@@ -96,9 +99,9 @@ public class Board extends JPanel implements ActionListener {
             {1,2,1,0,1,1,0,1,2,2,2,2,1,0,1,1,0,1,2,1},
             {1,2,2,2,1,1,2,2,2,1,1,2,2,2,1,1,2,2,2,1},
             {1,1,1,2,1,1,2,1,1,1,1,1,1,2,1,1,2,1,1,1},
-            {0,0,1,2,2,2,2,1,0,0,0,0,1,2,2,2,2,1,0,0},
-            {1,1,1,2,1,1,2,1,0,0,0,0,1,2,1,1,2,1,1,1},
-            {0,0,0,2,1,1,2,1,0,0,0,0,1,2,1,1,2,0,0,0},
+            {0,0,1,2,2,2,2,1,0,3,3,0,1,2,2,2,2,1,0,0},
+            {1,1,1,2,1,1,2,1,3,3,3,3,1,2,1,1,2,1,1,1},
+            {0,0,0,2,1,1,2,1,0,3,3,0,1,2,1,1,2,0,0,0},
             {1,1,1,2,1,1,2,1,1,1,1,1,1,2,1,1,2,1,1,1},
             {1,2,2,2,1,1,2,2,2,1,1,2,2,2,1,1,2,2,2,1},
             {1,2,1,0,1,1,0,1,2,2,2,2,1,0,1,1,0,1,2,1},
@@ -200,6 +203,12 @@ public class Board extends JPanel implements ActionListener {
                     g.setColor(Color.BLUE);
                     g.fillRect(x, y, blockSize, blockSize);
                     g.setColor(Color.CYAN);
+                    g.drawRect(x, y, blockSize, blockSize);
+                } else if (level[i][j] == GHOST_HOUSE) {
+                    // Draw ghost house with special walls
+                    g.setColor(GHOST_HOUSE_FILL);
+                    g.fillRect(x, y, blockSize, blockSize);
+                    g.setColor(GHOST_HOUSE_BORDER);
                     g.drawRect(x, y, blockSize, blockSize);
                 } else if (points[i][j]) {
                     // Dibujar punto
@@ -324,6 +333,34 @@ public class Board extends JPanel implements ActionListener {
         }
         
         return levels[currentLevel][row][col] == WALL;
+    }
+    
+    public boolean isWallForPacman(int x, int y) {
+        int row = y / blockSize;
+        int col = x / blockSize;
+        
+        // Verificar límites verticales
+        if (row < 0 || row >= 20) {
+            return true;
+        }
+        
+        // Si está fuera de los límites horizontales, verificar si es un túnel
+        if (col < 0 || col >= 20) {
+            // Permitir movimiento fuera de límites en las filas de túnel
+            // Verificar si la fila actual tiene apertura en los bordes
+            int[][] level = levels[currentLevel];
+            if (col < 0) {
+                // Verificando lado izquierdo - columna 0
+                return level[row][0] == WALL;
+            } else {
+                // Verificando lado derecho - columna 19
+                return level[row][19] == WALL;
+            }
+        }
+        
+        int cellValue = levels[currentLevel][row][col];
+        // Pacman cannot enter walls or ghost house
+        return cellValue == WALL || cellValue == GHOST_HOUSE;
     }
     
     public int getBlockSize() {

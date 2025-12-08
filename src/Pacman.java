@@ -39,10 +39,10 @@ public class Pacman {
         
         // Verificar colisión con paredes
         int edge = CHARACTER_SIZE - 1;
-        if (!board.isWall(newX, newY) && 
-            !board.isWall(newX + edge, newY) && 
-            !board.isWall(newX, newY + edge) && 
-            !board.isWall(newX + edge, newY + edge)) {
+        if (!board.isWallForPacman(newX, newY) && 
+            !board.isWallForPacman(newX + edge, newY) && 
+            !board.isWallForPacman(newX, newY + edge) && 
+            !board.isWallForPacman(newX + edge, newY + edge)) {
             x = newX;
             y = newY;
         }
