@@ -21,6 +21,7 @@ public class Board extends JPanel implements ActionListener {
     private boolean gameWon = false;
     private int[] ghostStartX;
     private int[] ghostStartY;
+    private SoundManager soundManager;
     
     // 0 = empty space, 1 = wall, 2 = point, 3 = ghost house, 4 = power pellet
     private static final int EMPTY = 0;
@@ -32,6 +33,7 @@ public class Board extends JPanel implements ActionListener {
     public Board() {
         setFocusable(true);
         setBackground(Color.BLACK);
+        soundManager = SoundManager.getInstance();
         initLevels();
         loadLevel(0);
         timer = new Timer(40, this);
@@ -264,6 +266,7 @@ public class Board extends JPanel implements ActionListener {
         if (collectedPoints >= totalPoints) {
             gameWon = true;
             timer.stop();
+            soundManager.playSound("level_complete");
             
             // Después de 2 segundos, cargar siguiente nivel
             Timer nextLevelTimer = new Timer(2000, new ActionListener() {
@@ -295,6 +298,7 @@ public class Board extends JPanel implements ActionListener {
                 points[pacRow][pacCol] = false;
                 pacman.addScore(10);
                 collectedPoints++;
+                soundManager.playSound("eat_dot");
                 checkLevelCompletion();
             }
             
@@ -303,6 +307,7 @@ public class Board extends JPanel implements ActionListener {
                 powerPellets[pacRow][pacCol] = false;
                 pacman.addScore(50);
                 collectedPoints++;
+                soundManager.playSound("eat_power");
                 
                 // Activar power-up
                 pacman.activatePowerUp();
@@ -323,6 +328,7 @@ public class Board extends JPanel implements ActionListener {
                     // Pacman come al fantasma cuando está asustado
                     pacman.addScore(200);
                     ghost.sendToStart();
+                    soundManager.playSound("eat_ghost");
                 } else if (!ghost.isReturning()) {
                     // Fantasma atrapa a Pacman (solo si no está regresando al inicio)
                     handlePacmanCaught();
@@ -334,6 +340,7 @@ public class Board extends JPanel implements ActionListener {
     
     private void handlePacmanCaught() {
         pacman.loseLife();
+        soundManager.playSound("death");
         
         if (pacman.getLives() <= 0) {
             // Game Over
