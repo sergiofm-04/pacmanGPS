@@ -39,12 +39,19 @@ public class Pacman {
             y = newY;
         }
         
-        // Mantener a Pacman dentro de los límites
-        int maxX = board.getBoardWidth() - 20;
+        // Teletransporte en los túneles laterales
+        int boardWidth = board.getBoardWidth();
+        int blockSize = board.getBlockSize();
+        
+        if (x < -blockSize) {
+            x = boardWidth - blockSize;
+        } else if (x > boardWidth) {
+            x = 0;
+        }
+        
+        // Mantener a Pacman dentro de los límites verticales
         int maxY = board.getBoardHeight() - 20;
-        if (x < 0) x = 0;
         if (y < 0) y = 0;
-        if (x > maxX) x = maxX;
         if (y > maxY) y = maxY;
     }
 
