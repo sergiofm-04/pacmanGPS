@@ -250,8 +250,23 @@ public class Board extends JPanel implements ActionListener {
         int row = y / blockSize;
         int col = x / blockSize;
         
-        if (row < 0 || row >= 20 || col < 0 || col >= 20) {
+        // Verificar límites verticales
+        if (row < 0 || row >= 20) {
             return true;
+        }
+        
+        // Si está fuera de los límites horizontales, verificar si es un túnel
+        if (col < 0 || col >= 20) {
+            // Permitir movimiento fuera de límites en las filas de túnel
+            // Verificar si la fila actual tiene apertura en los bordes
+            int[][] level = levels[currentLevel];
+            if (col < 0) {
+                // Verificando lado izquierdo - columna 0
+                return level[row][0] == WALL;
+            } else {
+                // Verificando lado derecho - columna 19
+                return level[row][19] == WALL;
+            }
         }
         
         return levels[currentLevel][row][col] == WALL;
