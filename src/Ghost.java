@@ -121,6 +121,9 @@ public class Ghost {
     public void resetPosition(int x, int y) {
         this.x = x;
         this.y = y;
+        // Reset returning state when position is reset
+        this.returning = false;
+        this.returningTimer = 0;
     }
     
     public int getX() {
@@ -137,6 +140,10 @@ public class Ghost {
     
     public boolean isFrightened() {
         return frightened && !returning;
+    }
+    
+    public boolean isReturning() {
+        return returning;
     }
     
     public void sendToStart() {

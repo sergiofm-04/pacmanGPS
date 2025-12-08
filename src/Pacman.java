@@ -82,6 +82,9 @@ public class Pacman {
         x = startX;
         y = startY;
         direction = Direction.LEFT;
+        // Clear power-up state when respawning
+        poweredUp = false;
+        powerUpEndTime = 0;
     }
 
     public void keyPressed(KeyEvent e) {

@@ -323,8 +323,8 @@ public class Board extends JPanel implements ActionListener {
                     // Pacman come al fantasma cuando está asustado
                     pacman.addScore(200);
                     ghost.sendToStart();
-                } else {
-                    // Fantasma atrapa a Pacman (incluso durante power-up si el fantasma no está asustado)
+                } else if (!ghost.isReturning()) {
+                    // Fantasma atrapa a Pacman (solo si no está regresando al inicio)
                     handlePacmanCaught();
                     break;
                 }
@@ -347,6 +347,8 @@ public class Board extends JPanel implements ActionListener {
             pacman.resetPosition();
             for (int i = 0; i < ghosts.length; i++) {
                 ghosts[i].resetPosition(ghostStartX[i], ghostStartY[i]);
+                // Reset ghost states when respawning
+                ghosts[i].setFrightened(false);
             }
             
             // Pausar brevemente antes de continuar
