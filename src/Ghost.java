@@ -6,11 +6,13 @@ public class Ghost {
     private Direction direction;
     private Color color;
     private Random random = new Random();
+    private Board board;
 
-    public Ghost(int x, int y, Color color) {
+    public Ghost(int x, int y, Color color, Board board) {
         this.x = x;
         this.y = y;
         this.color = color;
+        this.board = board;
         this.direction = Direction.values()[random.nextInt(4)];
     }
 
@@ -23,12 +25,42 @@ public class Ghost {
         if (random.nextInt(10) == 0) {
             direction = Direction.values()[random.nextInt(4)];
         }
+        
+        int newX = x;
+        int newY = y;
+        int speed = 4;
+        
         switch (direction) {
-            case LEFT: x -= 4; break;
-            case RIGHT: x += 4; break;
-            case UP: y -= 4; break;
-            case DOWN: y += 4; break;
+            case LEFT: newX -= speed; break;
+            case RIGHT: newX += speed; break;
+            case UP: newY -= speed; break;
+            case DOWN: newY += speed; break;
         }
-        // Aquí puedes agregar lógica de colisiones con el laberinto
+        
+        // Verificar colisión con paredes
+        if (!board.isWall(newX, newY) && 
+            !board.isWall(newX + 19, newY) && 
+            !board.isWall(newX, newY + 19) && 
+            !board.isWall(newX + 19, newY + 19)) {
+            x = newX;
+            y = newY;
+        } else {
+            // Cambiar dirección si choca con pared
+            direction = Direction.values()[random.nextInt(4)];
+        }
+        
+        // Mantener al fantasma dentro de los límites
+        if (x < 0) x = 0;
+        if (y < 0) y = 0;
+        if (x > 380) x = 380;
+        if (y > 380) y = 380;
+    }
+    
+    public int getX() {
+        return x;
+    }
+    
+    public int getY() {
+        return y;
     }
 }
