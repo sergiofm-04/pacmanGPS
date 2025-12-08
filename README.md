@@ -15,14 +15,13 @@ Juego básico de Pac-Man desarrollado en Java utilizando Swing para la interfaz 
 
 ```
 src/
-├── main/java/            # Código fuente principal
-│   ├── Game.java         # Clase principal: inicializa la ventana y el juego
-│   ├── Board.java        # Lógica y renderizado del tablero
-│   ├── Pacman.java       # Lógica y renderizado de Pac-Man
-│   ├── Ghost.java        # Lógica y renderizado de los fantasmas
-│   ├── Direction.java    # Enum para las direcciones de movimiento
-│   └── SoundManager.java # Gestor de efectos de sonido
-└── test/java/            # Tests unitarios (132 tests, 93% cobertura)
+├── Game.java             # Clase principal: inicializa la ventana y el juego
+├── Board.java            # Lógica y renderizado del tablero
+├── Pacman.java           # Lógica y renderizado de Pac-Man
+├── Ghost.java            # Lógica y renderizado de los fantasmas
+├── Direction.java        # Enum para las direcciones de movimiento
+├── SoundManager.java     # Gestor de efectos de sonido
+└── test/java/            # Tests unitarios (132+ tests, 100% cobertura)
     ├── GameTest.java
     ├── BoardTest.java
     ├── PacmanTest.java
