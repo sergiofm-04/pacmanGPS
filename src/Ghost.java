@@ -16,9 +16,10 @@ public class Ghost {
         this.direction = Direction.values()[random.nextInt(4)];
     }
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g, int yOffset) {
         g.setColor(color);
-        g.fillOval(x, y, 20, 20);
+        int size = Pacman.getCharacterSize();
+        g.fillOval(x, y + yOffset, size, size);
     }
 
     public void move() {
@@ -38,10 +39,11 @@ public class Ghost {
         }
         
         // Verificar colisión con paredes
+        int edge = Pacman.getCharacterSize() - 1;
         if (!board.isWall(newX, newY) && 
-            !board.isWall(newX + 19, newY) && 
-            !board.isWall(newX, newY + 19) && 
-            !board.isWall(newX + 19, newY + 19)) {
+            !board.isWall(newX + edge, newY) && 
+            !board.isWall(newX, newY + edge) && 
+            !board.isWall(newX + edge, newY + edge)) {
             x = newX;
             y = newY;
         } else {
@@ -60,9 +62,14 @@ public class Ghost {
         }
         
         // Mantener al fantasma dentro de los límites verticales
-        int maxY = board.getBoardHeight() - 20;
+        int maxY = board.getBoardHeight() - Pacman.getCharacterSize();
         if (y < 0) y = 0;
         if (y > maxY) y = maxY;
+    }
+    
+    public void resetPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
     
     public int getX() {

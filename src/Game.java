@@ -5,7 +5,7 @@ public class Game extends JFrame {
         add(new Board());
         setTitle("Pac-Man");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(400, 420);
+        setSize(400, 460);
         setLocationRelativeTo(null);
         setResizable(false);
     }

@@ -3,6 +3,9 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Board extends JPanel implements ActionListener {
+    private static final int RESPAWN_DELAY_MS = 1000;
+    private static final int STATUS_PANEL_HEIGHT = 40;
+    
     private Timer timer;
     private Pacman pacman;
     private Ghost[] ghosts;
@@ -13,6 +16,8 @@ public class Board extends JPanel implements ActionListener {
     private int totalPoints;
     private int collectedPoints = 0;
     private boolean gameWon = false;
+    private int[] ghostStartX;
+    private int[] ghostStartY;
     
     // 0 = espacio vacío, 1 = pared, 2 = punto
     private static final int EMPTY = 0;
@@ -134,37 +139,61 @@ public class Board extends JPanel implements ActionListener {
         pacman = new Pacman(blockSize * 1, blockSize * 1, this);
         
         // Posicionar fantasmas
+        ghostStartX = new int[] {blockSize * 9, blockSize * 10, blockSize * 9};
+        ghostStartY = new int[] {blockSize * 9, blockSize * 9, blockSize * 10};
         ghosts = new Ghost[] {
-            new Ghost(blockSize * 9, blockSize * 9, Color.RED, this),
-            new Ghost(blockSize * 10, blockSize * 9, Color.PINK, this),
-            new Ghost(blockSize * 9, blockSize * 10, Color.CYAN, this)
+            new Ghost(ghostStartX[0], ghostStartY[0], Color.RED, this),
+            new Ghost(ghostStartX[1], ghostStartY[1], Color.PINK, this),
+            new Ghost(ghostStartX[2], ghostStartY[2], Color.CYAN, this)
         };
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        drawStatusPanel(g);
         drawBoard(g);
-        pacman.draw(g);
+        pacman.draw(g, STATUS_PANEL_HEIGHT);
         for (Ghost ghost : ghosts) {
-            ghost.draw(g);
+            ghost.draw(g, STATUS_PANEL_HEIGHT);
         }
         
         if (gameWon) {
             g.setColor(Color.GREEN);
             g.setFont(new Font("Arial", Font.BOLD, 30));
-            g.drawString("¡NIVEL COMPLETADO!", 50, 200);
+            g.drawString("¡NIVEL COMPLETADO!", 50, 200 + STATUS_PANEL_HEIGHT);
         }
+    }
+    
+    private void drawStatusPanel(Graphics g) {
+        // Draw status panel background
+        g.setColor(new Color(20, 20, 20));
+        g.fillRect(0, 0, getBoardWidth(), STATUS_PANEL_HEIGHT);
+        
+        // Draw border
+        g.setColor(Color.CYAN);
+        g.drawRect(0, 0, getBoardWidth() - 1, STATUS_PANEL_HEIGHT - 1);
+        
+        // Draw lives
+        g.setColor(Color.YELLOW);
+        g.setFont(new Font("Arial", Font.BOLD, 14));
+        g.drawString("Vidas: " + pacman.getLives(), 10, 25);
+        
+        // Draw score
+        g.drawString("Puntos: " + pacman.getScore(), 120, 25);
+        
+        // Draw level info
+        g.drawString("Nivel: " + (currentLevel + 1), 250, 25);
     }
 
     private void drawBoard(Graphics g) {
         int[][] level = levels[currentLevel];
         
-        // Dibujar paredes y puntos
+        // Dibujar paredes y puntos (offset by STATUS_PANEL_HEIGHT)
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
                 int x = j * blockSize;
-                int y = i * blockSize;
+                int y = i * blockSize + STATUS_PANEL_HEIGHT;
                 
                 if (level[i][j] == WALL) {
                     // Dibujar pared
@@ -179,10 +208,6 @@ public class Board extends JPanel implements ActionListener {
                 }
             }
         }
-        
-        // Dibujar información
-        g.setColor(Color.YELLOW);
-        g.drawString("Score: " + pacman.getScore() + " | Nivel: " + (currentLevel + 1) + " | Puntos: " + collectedPoints + "/" + totalPoints, 10, 410);
     }
 
     @Override
@@ -235,14 +260,43 @@ public class Board extends JPanel implements ActionListener {
         }
         
         // Verificar colisión con fantasmas
+        int characterSize = Pacman.getCharacterSize();
         for (Ghost ghost : ghosts) {
-            if (Math.abs(pacman.getX() - ghost.getX()) < blockSize && 
-                Math.abs(pacman.getY() - ghost.getY()) < blockSize) {
-                timer.stop();
-                JOptionPane.showMessageDialog(this, 
-                    "¡Game Over! Un fantasma te atrapó.\nPuntuación: " + pacman.getScore());
-                System.exit(0);
+            if (Math.abs(pacman.getX() - ghost.getX()) < characterSize && 
+                Math.abs(pacman.getY() - ghost.getY()) < characterSize) {
+                handlePacmanCaught();
+                break;
             }
+        }
+    }
+    
+    private void handlePacmanCaught() {
+        pacman.loseLife();
+        
+        if (pacman.getLives() <= 0) {
+            // Game Over
+            timer.stop();
+            JOptionPane.showMessageDialog(this, 
+                "¡Game Over! Un fantasma te atrapó.\nPuntuación: " + pacman.getScore());
+            System.exit(0);
+        } else {
+            // Resetear posiciones pero mantener el progreso
+            timer.stop();
+            pacman.resetPosition();
+            for (int i = 0; i < ghosts.length; i++) {
+                ghosts[i].resetPosition(ghostStartX[i], ghostStartY[i]);
+            }
+            
+            // Pausar brevemente antes de continuar
+            Timer respawnTimer = new Timer(RESPAWN_DELAY_MS, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    timer.start();
+                    ((Timer)e.getSource()).stop();
+                }
+            });
+            respawnTimer.setRepeats(false);
+            respawnTimer.start();
         }
     }
     

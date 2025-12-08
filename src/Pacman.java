@@ -2,20 +2,27 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Pacman {
+    private static final int CHARACTER_SIZE = 15;
+    private static final int INITIAL_LIVES = 3;
+    
     private int x, y;
+    private int startX, startY;
     private Direction direction = Direction.LEFT;
     private int score = 0;
+    private int lives = INITIAL_LIVES;
     private Board board;
 
     public Pacman(int x, int y, Board board) {
         this.x = x;
         this.y = y;
+        this.startX = x;
+        this.startY = y;
         this.board = board;
     }
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g, int yOffset) {
         g.setColor(Color.YELLOW);
-        g.fillArc(x, y, 20, 20, direction.getAngle(), 300);
+        g.fillArc(x, y + yOffset, CHARACTER_SIZE, CHARACTER_SIZE, direction.getAngle(), 300);
     }
 
     public void move() {
@@ -31,10 +38,11 @@ public class Pacman {
         }
         
         // Verificar colisión con paredes
+        int edge = CHARACTER_SIZE - 1;
         if (!board.isWall(newX, newY) && 
-            !board.isWall(newX + 19, newY) && 
-            !board.isWall(newX, newY + 19) && 
-            !board.isWall(newX + 19, newY + 19)) {
+            !board.isWall(newX + edge, newY) && 
+            !board.isWall(newX, newY + edge) && 
+            !board.isWall(newX + edge, newY + edge)) {
             x = newX;
             y = newY;
         }
@@ -50,9 +58,27 @@ public class Pacman {
         }
         
         // Mantener a Pacman dentro de los límites verticales
-        int maxY = board.getBoardHeight() - 20;
+        int maxY = board.getBoardHeight() - CHARACTER_SIZE;
         if (y < 0) y = 0;
         if (y > maxY) y = maxY;
+    }
+    
+    public static int getCharacterSize() {
+        return CHARACTER_SIZE;
+    }
+    
+    public int getLives() {
+        return lives;
+    }
+    
+    public void loseLife() {
+        lives--;
+    }
+    
+    public void resetPosition() {
+        x = startX;
+        y = startY;
+        direction = Direction.LEFT;
     }
 
     public void keyPressed(KeyEvent e) {
