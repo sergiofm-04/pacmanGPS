@@ -2,11 +2,14 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Pacman {
+    private static final int CHARACTER_SIZE = 15;
+    private static final int INITIAL_LIVES = 3;
+    
     private int x, y;
     private int startX, startY;
     private Direction direction = Direction.LEFT;
     private int score = 0;
-    private int lives = 3;
+    private int lives = INITIAL_LIVES;
     private Board board;
 
     public Pacman(int x, int y, Board board) {
@@ -19,7 +22,7 @@ public class Pacman {
 
     public void draw(Graphics g) {
         g.setColor(Color.YELLOW);
-        g.fillArc(x, y, 15, 15, direction.getAngle(), 300);
+        g.fillArc(x, y, CHARACTER_SIZE, CHARACTER_SIZE, direction.getAngle(), 300);
     }
 
     public void move() {
@@ -35,10 +38,11 @@ public class Pacman {
         }
         
         // Verificar colisión con paredes
+        int edge = CHARACTER_SIZE - 1;
         if (!board.isWall(newX, newY) && 
-            !board.isWall(newX + 14, newY) && 
-            !board.isWall(newX, newY + 14) && 
-            !board.isWall(newX + 14, newY + 14)) {
+            !board.isWall(newX + edge, newY) && 
+            !board.isWall(newX, newY + edge) && 
+            !board.isWall(newX + edge, newY + edge)) {
             x = newX;
             y = newY;
         }
@@ -54,9 +58,13 @@ public class Pacman {
         }
         
         // Mantener a Pacman dentro de los límites verticales
-        int maxY = board.getBoardHeight() - 15;
+        int maxY = board.getBoardHeight() - CHARACTER_SIZE;
         if (y < 0) y = 0;
         if (y > maxY) y = maxY;
+    }
+    
+    public static int getCharacterSize() {
+        return CHARACTER_SIZE;
     }
     
     public int getLives() {

@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Board extends JPanel implements ActionListener {
+    private static final int RESPAWN_DELAY_MS = 1000;
+    
     private Timer timer;
     private Pacman pacman;
     private Ghost[] ghosts;
@@ -239,9 +241,10 @@ public class Board extends JPanel implements ActionListener {
         }
         
         // Verificar colisión con fantasmas
+        int characterSize = Pacman.getCharacterSize();
         for (Ghost ghost : ghosts) {
-            if (Math.abs(pacman.getX() - ghost.getX()) < 15 && 
-                Math.abs(pacman.getY() - ghost.getY()) < 15) {
+            if (Math.abs(pacman.getX() - ghost.getX()) < characterSize && 
+                Math.abs(pacman.getY() - ghost.getY()) < characterSize) {
                 handlePacmanCaught();
                 break;
             }
@@ -266,7 +269,7 @@ public class Board extends JPanel implements ActionListener {
             }
             
             // Pausar brevemente antes de continuar
-            Timer respawnTimer = new Timer(1000, new ActionListener() {
+            Timer respawnTimer = new Timer(RESPAWN_DELAY_MS, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     timer.start();

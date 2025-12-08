@@ -2,6 +2,8 @@ import java.awt.*;
 import java.util.Random;
 
 public class Ghost {
+    private static final int CHARACTER_SIZE = 15;
+    
     private int x, y;
     private Direction direction;
     private Color color;
@@ -18,7 +20,7 @@ public class Ghost {
 
     public void draw(Graphics g) {
         g.setColor(color);
-        g.fillOval(x, y, 15, 15);
+        g.fillOval(x, y, CHARACTER_SIZE, CHARACTER_SIZE);
     }
 
     public void move() {
@@ -38,10 +40,11 @@ public class Ghost {
         }
         
         // Verificar colisión con paredes
+        int edge = CHARACTER_SIZE - 1;
         if (!board.isWall(newX, newY) && 
-            !board.isWall(newX + 14, newY) && 
-            !board.isWall(newX, newY + 14) && 
-            !board.isWall(newX + 14, newY + 14)) {
+            !board.isWall(newX + edge, newY) && 
+            !board.isWall(newX, newY + edge) && 
+            !board.isWall(newX + edge, newY + edge)) {
             x = newX;
             y = newY;
         } else {
@@ -60,7 +63,7 @@ public class Ghost {
         }
         
         // Mantener al fantasma dentro de los límites verticales
-        int maxY = board.getBoardHeight() - 15;
+        int maxY = board.getBoardHeight() - CHARACTER_SIZE;
         if (y < 0) y = 0;
         if (y > maxY) y = maxY;
     }
