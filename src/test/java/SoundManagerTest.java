@@ -91,15 +91,12 @@ public class SoundManagerTest {
     @Test
     public void testPlayAllSoundTypes() {
         // Try to play all sound types to ensure they're loaded
+        // Sounds play asynchronously, but we're only testing that they don't throw exceptions
         assertDoesNotThrow(() -> {
             soundManager.playSound("eat_dot");
-            Thread.sleep(10); // Small delay
             soundManager.playSound("eat_power");
-            Thread.sleep(10);
             soundManager.playSound("eat_ghost");
-            Thread.sleep(10);
             soundManager.playSound("death");
-            Thread.sleep(10);
             soundManager.playSound("level_complete");
         });
     }
