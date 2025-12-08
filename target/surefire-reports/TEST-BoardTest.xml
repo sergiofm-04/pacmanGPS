@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="BoardTest" time="0.188" tests="49" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="17"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/runner/work/pacmanGPS/pacmanGPS/target/test-classes:/home/runner/work/pacmanGPS/pacmanGPS/target/classes:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.1/junit-jupiter-api-5.10.1.jar:/home/runner/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/runner/.m2/repository/org/junit/platform/junit-platform-commons/1.10.1/junit-platform-commons-1.10.1.jar:/home/runner/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.1/junit-jupiter-engine-5.10.1.jar:/home/runner/.m2/repository/org/junit/platform/junit-platform-engine/1.10.1/junit-platform-engine-1.10.1.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.1/junit-jupiter-params-5.10.1.jar:/home/runner/.m2/repository/org/mockito/mockito-core/5.8.0/mockito-core-5.8.0.jar:/home/runner/.m2/repository/net/bytebuddy/byte-buddy/1.14.10/byte-buddy-1.14.10.jar:/home/runner/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.10/byte-buddy-agent-1.14.10.jar:/home/runner/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:/home/runner/.m2/repository/org/mockito/mockito-junit-jupiter/5.8.0/mockito-junit-jupiter-5.8.0.jar:"/>
+    <property name="java.vm.vendor" value="Eclipse Adoptium"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="sun.font.fontmanager" value="sun.awt.X11FontManager"/>
+    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="user.timezone" value="Etc/UTC"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="17"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/temurin-17-jdk-amd64/lib"/>
+    <property name="sun.java.command" value="/home/runner/work/pacmanGPS/pacmanGPS/target/surefire/surefirebooter-20251208193939652_3.jar /home/runner/work/pacmanGPS/pacmanGPS/target/surefire 2025-12-08T19-39-39_579-jvmRun1 surefire-20251208193939652_1tmp surefire_0-20251208193939652_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/runner/work/pacmanGPS/pacmanGPS/target/test-classes:/home/runner/work/pacmanGPS/pacmanGPS/target/classes:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.1/junit-jupiter-api-5.10.1.jar:/home/runner/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/runner/.m2/repository/org/junit/platform/junit-platform-commons/1.10.1/junit-platform-commons-1.10.1.jar:/home/runner/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.1/junit-jupiter-engine-5.10.1.jar:/home/runner/.m2/repository/org/junit/platform/junit-platform-engine/1.10.1/junit-platform-engine-1.10.1.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.1/junit-jupiter-params-5.10.1.jar:/home/runner/.m2/repository/org/mockito/mockito-core/5.8.0/mockito-core-5.8.0.jar:/home/runner/.m2/repository/net/bytebuddy/byte-buddy/1.14.10/byte-buddy-1.14.10.jar:/home/runner/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.10/byte-buddy-agent-1.14.10.jar:/home/runner/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:/home/runner/.m2/repository/org/mockito/mockito-junit-jupiter/5.8.0/mockito-junit-jupiter-5.8.0.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/runner"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2025-10-21"/>
+    <property name="java.home" value="/usr/lib/jvm/temurin-17-jdk-amd64"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/runner/work/pacmanGPS/pacmanGPS"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="surefire.real.class.path" value="/home/runner/work/pacmanGPS/pacmanGPS/target/surefire/surefirebooter-20251208193939652_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="17.0.17+10"/>
+    <property name="user.name" value="runner"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.11.0-1018-azure"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Temurin-17.0.17+10"/>
+    <property name="localRepository" value="/home/runner/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="17.0.17"/>
+    <property name="user.dir" value="/home/runner/work/pacmanGPS/pacmanGPS"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Eclipse Adoptium"/>
+    <property name="java.vm.version" value="17.0.17+10"/>
+    <property name="java.specification.maintenance.version" value="1"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="61.0"/>
+  </properties>
+  <testcase name="testActionPerformedMultipleTimes" classname="BoardTest" time="0.068"/>
+  <testcase name="testDrawBoardMethod" classname="BoardTest" time="0.001"/>
+  <testcase name="testIsWallBoundaryConditions" classname="BoardTest" time="0.002">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-7" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testIsWallAtEmptyPosition" classname="BoardTest" time="0.001"/>
+  <testcase name="testBoardHasKeyListeners" classname="BoardTest" time="0.001"/>
+  <testcase name="testActionPerformed" classname="BoardTest" time="0.001"/>
+  <testcase name="testIsWallNegativeCoordinates" classname="BoardTest" time="0.001"/>
+  <testcase name="testIsWallAtWallPosition" classname="BoardTest" time="0.001"/>
+  <testcase name="testIsWallOutOfBoundsBottom" classname="BoardTest" time="0.001">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-4" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testGetBoardWidth" classname="BoardTest" time="0.001"/>
+  <testcase name="testBoardDimensions" classname="BoardTest" time="0.001"/>
+  <testcase name="testBoardPropertiesConsistency" classname="BoardTest" time="0.001"/>
+  <testcase name="testInitLevelsMethod" classname="BoardTest" time="0.003"/>
+  <testcase name="testIsWallForPacmanBoundaryConditions" classname="BoardTest" time="0.001"/>
+  <testcase name="testIsWallLargeCoordinates" classname="BoardTest" time="0.001"/>
+  <testcase name="testIsWallForPacmanAtCenter" classname="BoardTest" time="0.001"/>
+  <testcase name="testIsWallForPacmanAtWallPosition" classname="BoardTest" time="0.001"/>
+  <testcase name="testBoardIsFocusable" classname="BoardTest" time="0.001"/>
+  <testcase name="testBoardInitialization" classname="BoardTest" time="0.001"/>
+  <testcase name="testLoadLevelMethod" classname="BoardTest" time="0.002"/>
+  <testcase name="testIsWallAtCenter" classname="BoardTest" time="0.001"/>
+  <testcase name="testBlockSizeConsistency" classname="BoardTest" time="0.001"/>
+  <testcase name="testHandlePacmanCaughtMethod" classname="BoardTest" time="0.003"/>
+  <testcase name="testConsistentWallChecking" classname="BoardTest" time="0.001">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-5" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testIsWallForPacmanAtGhostHouse" classname="BoardTest" time="0.003"/>
+  <testcase name="testBoardBackgroundColor" classname="BoardTest" time="0.001">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-6" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Exception in thread "pool-2-thread-10" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testGetBoardHeight" classname="BoardTest" time="0.004">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-9" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Exception in thread "pool-2-thread-12" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Exception in thread "pool-2-thread-13" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Exception in thread "pool-2-thread-8" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Exception in thread "pool-2-thread-11" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testIsWallForPacmanRowByRow" classname="BoardTest" time="0.001"/>
+  <testcase name="testCheckLevelCompletionWithReflection" classname="BoardTest" time="0.003">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-15" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Exception in thread "pool-2-thread-17" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Exception in thread "pool-2-thread-18" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testIsWallRowByRow" classname="BoardTest" time="0.001">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-14" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+Exception in thread "pool-2-thread-16" Exception in thread "pool-2-thread-19" 	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testIsWallOutOfBoundsTop" classname="BoardTest" time="0.002">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-22" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testMultipleActionPerformed" classname="BoardTest" time="0.004">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-21" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Exception in thread "pool-2-thread-23" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Exception in thread "pool-2-thread-25" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testMultipleLevelsConfiguration" classname="BoardTest" time="0.001"/>
+  <testcase name="testCheckCollisionsMethod" classname="BoardTest" time="0.003">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-28" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testConsistentWallCheckingForPacman" classname="BoardTest" time="0.001">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-31" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testBoardHasTimer" classname="BoardTest" time="0.002">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-24" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testDrawStatusPanelMethod" classname="BoardTest" time="0.002">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-26" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Exception in thread "pool-2-thread-20" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testIsWallColumnByColumn" classname="BoardTest" time="0.001"/>
+  <testcase name="testActionPerformedWhenGameWon" classname="BoardTest" time="0.003">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-27" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Exception in thread "pool-2-thread-30" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testIsWallAtDifferentPositions" classname="BoardTest" time="0.003">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-34" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Exception in thread "pool-2-thread-32" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Exception in thread "pool-2-thread-35" ]]></system-err>
+  </testcase>
+  <testcase name="testPaintComponentDoesNotThrow" classname="BoardTest" time="0.0"/>
+  <testcase name="testIsWallOutOfBoundsRightTunnel" classname="BoardTest" time="0.002">
+    <system-err><![CDATA[java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testIsWallForPacmanLargeCoordinates" classname="BoardTest" time="0.001">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-29" ]]></system-err>
+  </testcase>
+  <testcase name="testGetBlockSize" classname="BoardTest" time="0.001">
+    <system-err><![CDATA[java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testIsWallForPacmanNegativeCoordinates" classname="BoardTest" time="0.001"/>
+  <testcase name="testIsWallForPacmanAtDifferentPositions" classname="BoardTest" time="0.001">
+    <system-err><![CDATA[Exception in thread "pool-2-thread-36" java.lang.IllegalArgumentException: No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
+	at java.desktop/javax.sound.sampled.AudioSystem.getLine(AudioSystem.java:425)
+	at java.desktop/javax.sound.sampled.AudioSystem.getClip(AudioSystem.java:461)
+	at SoundManager.lambda$playSound$1(SoundManager.java:137)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+]]></system-err>
+  </testcase>
+  <testcase name="testIsWallForPacmanColumnByColumn" classname="BoardTest" time="0.001"/>
+  <testcase name="testPacmanKeyAdapterClass" classname="BoardTest" time="0.0"/>
+  <testcase name="testIsWallOutOfBoundsLeftTunnel" classname="BoardTest" time="0.001"/>
+</testsuite>

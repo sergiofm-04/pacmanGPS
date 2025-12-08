@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Ghost.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PacmanGPS</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Ghost.java</span></div><h1>Ghost.java</h1><pre class="source lang-java linenums">import java.awt.*;
+import java.util.Random;
+
+public class Ghost {
+    private static final int HALF_CIRCLE_DEGREES = 180;
+    private static final int FRIGHTENED_SPEED = 2;
+    private static final int NORMAL_SPEED = 4;
+    private static final int RETURNING_DURATION_FRAMES = 50;
+    
+    private int x, y;
+    private int startX, startY;
+    private Direction direction;
+    private Color color;
+<span class="fc" id="L14">    private Random random = new Random();</span>
+    private Board board;
+<span class="fc" id="L16">    private boolean frightened = false;</span>
+<span class="fc" id="L17">    private boolean returning = false;</span>
+<span class="fc" id="L18">    private int returningTimer = 0;</span>
+
+<span class="fc" id="L20">    public Ghost(int x, int y, Color color, Board board) {</span>
+<span class="fc" id="L21">        this.x = x;</span>
+<span class="fc" id="L22">        this.y = y;</span>
+<span class="fc" id="L23">        this.startX = x;</span>
+<span class="fc" id="L24">        this.startY = y;</span>
+<span class="fc" id="L25">        this.color = color;</span>
+<span class="fc" id="L26">        this.board = board;</span>
+<span class="fc" id="L27">        this.direction = Direction.values()[random.nextInt(4)];</span>
+<span class="fc" id="L28">    }</span>
+
+    public void draw(Graphics g, int yOffset) {
+        // Use blue color when frightened, otherwise use normal color
+<span class="pc bpc" id="L32" title="1 of 4 branches missed.">        Color drawColor = (frightened &amp;&amp; !returning) ? Color.BLUE : color;</span>
+<span class="fc" id="L33">        g.setColor(drawColor);</span>
+<span class="fc" id="L34">        int size = Pacman.getCharacterSize();</span>
+<span class="fc" id="L35">        int adjustedY = y + yOffset;</span>
+        
+        // Draw ghost shape: rounded top + wavy bottom
+        // Draw the rounded top part (semi-circle)
+<span class="fc" id="L39">        g.fillArc(x, adjustedY, size, size, 0, HALF_CIRCLE_DEGREES);</span>
+        
+        // Draw the body rectangle
+<span class="fc" id="L42">        g.fillRect(x, adjustedY + size/2, size, size/2);</span>
+        
+        // Draw wavy bottom (3 small arcs for the wave effect)
+<span class="fc" id="L45">        int waveWidth = size / 3;</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        for (int i = 0; i &lt; 3; i++) {</span>
+<span class="fc" id="L47">            g.fillArc(x + i * waveWidth, adjustedY + size - waveWidth/2, waveWidth, waveWidth/2, HALF_CIRCLE_DEGREES, HALF_CIRCLE_DEGREES);</span>
+        }
+        
+        // Draw eyes
+<span class="fc" id="L51">        g.setColor(Color.WHITE);</span>
+<span class="fc" id="L52">        int eyeSize = size / 5;</span>
+<span class="fc" id="L53">        int eyeY = adjustedY + size / 3;</span>
+<span class="fc" id="L54">        g.fillOval(x + size/4 - eyeSize/2, eyeY, eyeSize, eyeSize);</span>
+<span class="fc" id="L55">        g.fillOval(x + 3*size/4 - eyeSize/2, eyeY, eyeSize, eyeSize);</span>
+        
+        // Draw pupils
+<span class="fc" id="L58">        g.setColor(Color.BLACK);</span>
+<span class="fc" id="L59">        int pupilSize = eyeSize / 2;</span>
+<span class="fc" id="L60">        g.fillOval(x + size/4 - pupilSize/2, eyeY + pupilSize/2, pupilSize, pupilSize);</span>
+<span class="fc" id="L61">        g.fillOval(x + 3*size/4 - pupilSize/2, eyeY + pupilSize/2, pupilSize, pupilSize);</span>
+<span class="fc" id="L62">    }</span>
+
+    public void move() {
+        // If returning to start, handle countdown
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (returning) {</span>
+<span class="fc" id="L67">            returningTimer--;</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">            if (returningTimer &lt;= 0) {</span>
+<span class="fc" id="L69">                x = startX;</span>
+<span class="fc" id="L70">                y = startY;</span>
+<span class="fc" id="L71">                returning = false;</span>
+<span class="fc" id="L72">                frightened = false;</span>
+            }
+<span class="fc" id="L74">            return; // Don't move while returning countdown</span>
+        }
+        
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        if (random.nextInt(10) == 0) {</span>
+<span class="fc" id="L78">            direction = Direction.values()[random.nextInt(4)];</span>
+        }
+        
+<span class="fc" id="L81">        int newX = x;</span>
+<span class="fc" id="L82">        int newY = y;</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        int speed = frightened ? FRIGHTENED_SPEED : NORMAL_SPEED; // Slower when frightened</span>
+        
+<span class="pc bpc" id="L85" title="1 of 5 branches missed.">        switch (direction) {</span>
+<span class="fc" id="L86">            case LEFT: newX -= speed; break;</span>
+<span class="fc" id="L87">            case RIGHT: newX += speed; break;</span>
+<span class="fc" id="L88">            case UP: newY -= speed; break;</span>
+<span class="fc" id="L89">            case DOWN: newY += speed; break;</span>
+        }
+        
+        // Verificar colisión con paredes
+<span class="fc" id="L93">        int edge = Pacman.getCharacterSize() - 1;</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        if (!board.isWall(newX, newY) &amp;&amp; </span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">            !board.isWall(newX + edge, newY) &amp;&amp; </span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">            !board.isWall(newX, newY + edge) &amp;&amp; </span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">            !board.isWall(newX + edge, newY + edge)) {</span>
+<span class="fc" id="L98">            x = newX;</span>
+<span class="fc" id="L99">            y = newY;</span>
+        } else {
+            // Cambiar dirección si choca con pared
+<span class="fc" id="L102">            direction = Direction.values()[random.nextInt(4)];</span>
+        }
+        
+        // Teletransporte en los túneles laterales
+<span class="fc" id="L106">        int boardWidth = board.getBoardWidth();</span>
+<span class="fc" id="L107">        int blockSize = board.getBlockSize();</span>
+        
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (x &lt; -blockSize) {</span>
+<span class="fc" id="L110">            x = boardWidth - blockSize;</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        } else if (x &gt; boardWidth) {</span>
+<span class="fc" id="L112">            x = 0;</span>
+        }
+        
+        // Mantener al fantasma dentro de los límites verticales
+<span class="fc" id="L116">        int maxY = board.getBoardHeight() - Pacman.getCharacterSize();</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        if (y &lt; 0) y = 0;</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (y &gt; maxY) y = maxY;</span>
+<span class="fc" id="L119">    }</span>
+    
+    public void resetPosition(int x, int y) {
+<span class="fc" id="L122">        this.x = x;</span>
+<span class="fc" id="L123">        this.y = y;</span>
+        // Reset returning state when position is reset
+<span class="fc" id="L125">        this.returning = false;</span>
+<span class="fc" id="L126">        this.returningTimer = 0;</span>
+<span class="fc" id="L127">    }</span>
+    
+    public int getX() {
+<span class="fc" id="L130">        return x;</span>
+    }
+    
+    public int getY() {
+<span class="fc" id="L134">        return y;</span>
+    }
+    
+    public void setFrightened(boolean frightened) {
+<span class="fc" id="L138">        this.frightened = frightened;</span>
+<span class="fc" id="L139">    }</span>
+    
+    public boolean isFrightened() {
+<span class="fc bfc" id="L142" title="All 4 branches covered.">        return frightened &amp;&amp; !returning;</span>
+    }
+    
+    public boolean isReturning() {
+<span class="fc" id="L146">        return returning;</span>
+    }
+    
+    public void sendToStart() {
+<span class="fc" id="L150">        returning = true;</span>
+<span class="fc" id="L151">        returningTimer = RETURNING_DURATION_FRAMES; // About 2 seconds (depends on Board timer interval)</span>
+<span class="fc" id="L152">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

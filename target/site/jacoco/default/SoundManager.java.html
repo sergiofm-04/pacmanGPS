@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SoundManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PacmanGPS</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">SoundManager.java</span></div><h1>SoundManager.java</h1><pre class="source lang-java linenums">import javax.sound.sampled.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class SoundManager {
+    private static volatile SoundManager instance;
+    private Map&lt;String, byte[]&gt; soundData;
+<span class="fc" id="L12">    private boolean soundEnabled = true;</span>
+    private ExecutorService soundExecutor;
+    
+<span class="fc" id="L15">    private SoundManager() {</span>
+<span class="fc" id="L16">        soundData = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L17">        soundExecutor = Executors.newFixedThreadPool(4); // Limit concurrent sound threads</span>
+<span class="fc" id="L18">        loadSounds();</span>
+<span class="fc" id="L19">    }</span>
+    
+    public static SoundManager getInstance() {
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        if (instance == null) {</span>
+<span class="fc" id="L23">            synchronized (SoundManager.class) {</span>
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">                if (instance == null) {</span>
+<span class="fc" id="L25">                    instance = new SoundManager();</span>
+                }
+<span class="fc" id="L27">            }</span>
+        }
+<span class="fc" id="L29">        return instance;</span>
+    }
+    
+    private void loadSounds() {
+        // Load all sound effects as synthetic sounds
+        // We'll generate simple beep sounds programmatically to avoid external dependencies
+        try {
+<span class="fc" id="L36">            soundData.put(&quot;eat_dot&quot;, generateBeep(100, 0.05, 800));</span>
+<span class="fc" id="L37">            soundData.put(&quot;eat_power&quot;, generateBeep(200, 0.2, 400));</span>
+<span class="fc" id="L38">            soundData.put(&quot;eat_ghost&quot;, generateBeep(300, 0.3, 600));</span>
+<span class="fc" id="L39">            soundData.put(&quot;death&quot;, generateSweep(500, 200, 0.5));</span>
+<span class="fc" id="L40">            soundData.put(&quot;level_complete&quot;, generateChord(300, 0.5));</span>
+<span class="nc" id="L41">        } catch (Exception e) {</span>
+<span class="nc" id="L42">            System.err.println(&quot;Error loading sounds: &quot; + e.getMessage());</span>
+<span class="nc" id="L43">            soundEnabled = false;</span>
+<span class="fc" id="L44">        }</span>
+<span class="fc" id="L45">    }</span>
+    
+    // Generate a simple beep tone
+    private byte[] generateBeep(int frequency, double duration, int amplitude) {
+<span class="fc" id="L49">        int sampleRate = 8000;</span>
+<span class="fc" id="L50">        int numSamples = (int) (sampleRate * duration);</span>
+<span class="fc" id="L51">        byte[] buffer = new byte[numSamples * 2]; // 16-bit audio = 2 bytes per sample</span>
+        
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (int i = 0; i &lt; numSamples; i++) {</span>
+<span class="fc" id="L54">            double angle = 2.0 * Math.PI * i * frequency / sampleRate;</span>
+<span class="fc" id="L55">            short value = (short) (Math.sin(angle) * amplitude);</span>
+            
+            // Convert to bytes (little-endian)
+<span class="fc" id="L58">            buffer[2 * i] = (byte) (value &amp; 0xFF);</span>
+<span class="fc" id="L59">            buffer[2 * i + 1] = (byte) ((value &gt;&gt; 8) &amp; 0xFF);</span>
+        }
+        
+<span class="fc" id="L62">        return buffer;</span>
+    }
+    
+    // Generate a frequency sweep (for death sound)
+    private byte[] generateSweep(int startFreq, int endFreq, double duration) {
+<span class="fc" id="L67">        int sampleRate = 8000;</span>
+<span class="fc" id="L68">        int numSamples = (int) (sampleRate * duration);</span>
+<span class="fc" id="L69">        byte[] buffer = new byte[numSamples * 2];</span>
+        
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        for (int i = 0; i &lt; numSamples; i++) {</span>
+<span class="fc" id="L72">            double progress = (double) i / numSamples;</span>
+<span class="fc" id="L73">            int frequency = (int) (startFreq + (endFreq - startFreq) * progress);</span>
+<span class="fc" id="L74">            double angle = 2.0 * Math.PI * i * frequency / sampleRate;</span>
+<span class="fc" id="L75">            short value = (short) (Math.sin(angle) * 1000 * (1 - progress)); // Fade out</span>
+            
+<span class="fc" id="L77">            buffer[2 * i] = (byte) (value &amp; 0xFF);</span>
+<span class="fc" id="L78">            buffer[2 * i + 1] = (byte) ((value &gt;&gt; 8) &amp; 0xFF);</span>
+        }
+        
+<span class="fc" id="L81">        return buffer;</span>
+    }
+    
+    // Generate a chord (for level complete)
+    private byte[] generateChord(int baseFreq, double duration) {
+<span class="fc" id="L86">        int sampleRate = 8000;</span>
+<span class="fc" id="L87">        int numSamples = (int) (sampleRate * duration);</span>
+<span class="fc" id="L88">        byte[] buffer = new byte[numSamples * 2];</span>
+        
+        // Major chord: base, major third, perfect fifth
+<span class="fc" id="L91">        int[] frequencies = {baseFreq, (int)(baseFreq * 1.25), (int)(baseFreq * 1.5)};</span>
+        
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        for (int i = 0; i &lt; numSamples; i++) {</span>
+<span class="fc" id="L94">            double sample = 0;</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">            for (int freq : frequencies) {</span>
+<span class="fc" id="L96">                double angle = 2.0 * Math.PI * i * freq / sampleRate;</span>
+<span class="fc" id="L97">                sample += Math.sin(angle);</span>
+            }
+<span class="fc" id="L99">            short value = (short) (sample * 300); // Amplitude</span>
+            
+<span class="fc" id="L101">            buffer[2 * i] = (byte) (value &amp; 0xFF);</span>
+<span class="fc" id="L102">            buffer[2 * i + 1] = (byte) ((value &gt;&gt; 8) &amp; 0xFF);</span>
+        }
+        
+<span class="fc" id="L105">        return buffer;</span>
+    }
+    
+    public void playSound(String soundName) {
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (!soundEnabled) {</span>
+<span class="fc" id="L110">            return;</span>
+        }
+        
+<span class="fc" id="L113">        byte[] data = soundData.get(soundName);</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        if (data == null) {</span>
+<span class="fc" id="L115">            return;</span>
+        }
+        
+        // Play sound using thread pool to avoid resource exhaustion
+<span class="fc" id="L119">        soundExecutor.execute(() -&gt; {</span>
+<span class="fc" id="L120">            Clip clip = null;</span>
+            try {
+                // Create audio format
+<span class="fc" id="L123">                AudioFormat format = new AudioFormat(</span>
+                    8000,  // sample rate
+                    16,    // bits per sample
+                    1,     // channels (mono)
+                    true,  // signed
+                    false  // little-endian
+                );
+                
+                // Create audio input stream
+<span class="fc" id="L132">                try (ByteArrayInputStream bais = new ByteArrayInputStream(data);</span>
+<span class="fc" id="L133">                     AudioInputStream audioInputStream = new AudioInputStream(</span>
+<span class="fc" id="L134">                         bais, format, data.length / format.getFrameSize())) {</span>
+                    
+                    // Get and open a clip
+<span class="nc" id="L137">                    clip = AudioSystem.getClip();</span>
+<span class="nc" id="L138">                    final Clip finalClip = clip;</span>
+<span class="nc" id="L139">                    clip.open(audioInputStream);</span>
+                    
+                    // Add listener to close clip after playing
+<span class="nc" id="L142">                    clip.addLineListener(event -&gt; {</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">                        if (event.getType() == LineEvent.Type.STOP) {</span>
+<span class="nc" id="L144">                            finalClip.close();</span>
+                        }
+<span class="nc" id="L146">                    });</span>
+                    
+                    // Start playing
+<span class="nc" id="L149">                    clip.start();</span>
+                    
+                    // Wait for clip to finish
+<span class="nc bnc" id="L152" title="All 2 branches missed.">                    while (clip.isRunning()) {</span>
+<span class="nc" id="L153">                        Thread.sleep(10);</span>
+                    }
+                }
+                
+<span class="nc" id="L157">            } catch (LineUnavailableException | IOException | InterruptedException e) {</span>
+<span class="nc" id="L158">                System.err.println(&quot;Error playing sound: &quot; + e.getMessage());</span>
+<span class="nc bnc" id="L159" title="All 4 branches missed.">                if (clip != null &amp;&amp; clip.isOpen()) {</span>
+<span class="nc" id="L160">                    clip.close();</span>
+                }
+<span class="nc" id="L162">            }</span>
+<span class="nc" id="L163">        });</span>
+<span class="fc" id="L164">    }</span>
+    
+    public void setSoundEnabled(boolean enabled) {
+<span class="fc" id="L167">        this.soundEnabled = enabled;</span>
+<span class="fc" id="L168">    }</span>
+    
+    public boolean isSoundEnabled() {
+<span class="fc" id="L171">        return soundEnabled;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
