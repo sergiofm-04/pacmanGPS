@@ -5,21 +5,29 @@ public class Ghost {
     private static final int HALF_CIRCLE_DEGREES = 180;
     
     private int x, y;
+    private int startX, startY;
     private Direction direction;
     private Color color;
     private Random random = new Random();
     private Board board;
+    private boolean frightened = false;
+    private boolean returning = false;
+    private int returningTimer = 0;
 
     public Ghost(int x, int y, Color color, Board board) {
         this.x = x;
         this.y = y;
+        this.startX = x;
+        this.startY = y;
         this.color = color;
         this.board = board;
         this.direction = Direction.values()[random.nextInt(4)];
     }
 
     public void draw(Graphics g, int yOffset) {
-        g.setColor(color);
+        // Use blue color when frightened, otherwise use normal color
+        Color drawColor = (frightened && !returning) ? Color.BLUE : color;
+        g.setColor(drawColor);
         int size = Pacman.getCharacterSize();
         int adjustedY = y + yOffset;
         
@@ -51,13 +59,25 @@ public class Ghost {
     }
 
     public void move() {
+        // If returning to start, handle countdown
+        if (returning) {
+            returningTimer--;
+            if (returningTimer <= 0) {
+                x = startX;
+                y = startY;
+                returning = false;
+                frightened = false;
+            }
+            return; // Don't move while returning countdown
+        }
+        
         if (random.nextInt(10) == 0) {
             direction = Direction.values()[random.nextInt(4)];
         }
         
         int newX = x;
         int newY = y;
-        int speed = 4;
+        int speed = frightened ? 2 : 4; // Slower when frightened
         
         switch (direction) {
             case LEFT: newX -= speed; break;
@@ -106,5 +126,18 @@ public class Ghost {
     
     public int getY() {
         return y;
+    }
+    
+    public void setFrightened(boolean frightened) {
+        this.frightened = frightened;
+    }
+    
+    public boolean isFrightened() {
+        return frightened && !returning;
+    }
+    
+    public void sendToStart() {
+        returning = true;
+        returningTimer = 50; // About 2 seconds at 40ms per frame
     }
 }

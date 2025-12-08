@@ -15,17 +15,19 @@ public class Board extends JPanel implements ActionListener {
     private int blockSize = 20;
     private int[][][] levels;
     private boolean[][] points;
+    private boolean[][] powerPellets;
     private int totalPoints;
     private int collectedPoints = 0;
     private boolean gameWon = false;
     private int[] ghostStartX;
     private int[] ghostStartY;
     
-    // 0 = empty space, 1 = wall, 2 = point, 3 = ghost house
+    // 0 = empty space, 1 = wall, 2 = point, 3 = ghost house, 4 = power pellet
     private static final int EMPTY = 0;
     private static final int WALL = 1;
     private static final int POINT = 2;
     private static final int GHOST_HOUSE = 3;
+    private static final int POWER_PELLET = 4;
 
     public Board() {
         setFocusable(true);
@@ -44,7 +46,7 @@ public class Board extends JPanel implements ActionListener {
         // Nivel 1 - Diseño simple
         int[][] level1 = {
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-            {1,2,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,2,2,1},
+            {1,4,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,2,4,1},
             {1,2,1,1,2,1,1,1,2,1,1,2,1,1,1,2,1,1,2,1},
             {1,2,1,1,2,1,1,1,2,1,1,2,1,1,1,2,1,1,2,1},
             {1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1},
@@ -61,14 +63,14 @@ public class Board extends JPanel implements ActionListener {
             {1,2,1,1,2,1,1,1,2,1,1,2,1,1,1,2,1,1,2,1},
             {1,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,1,2,2,1},
             {1,1,2,1,2,1,2,1,1,1,1,1,1,2,1,2,1,2,1,1},
-            {1,2,2,2,2,1,2,2,2,1,1,2,2,2,1,2,2,2,2,1},
+            {1,4,2,2,2,1,2,2,2,1,1,2,2,2,1,2,2,2,4,1},
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
         };
         
         // Nivel 2 - Diseño intermedio
         int[][] level2 = {
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-            {1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1},
+            {1,4,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,4,1},
             {1,2,1,1,1,2,1,1,2,1,1,2,1,1,2,1,1,1,2,1},
             {1,2,1,0,0,2,1,1,2,1,1,2,1,1,2,0,0,1,2,1},
             {1,2,1,1,1,2,2,2,2,2,2,2,2,2,2,1,1,1,2,1},
@@ -85,14 +87,14 @@ public class Board extends JPanel implements ActionListener {
             {1,2,1,1,1,2,2,2,2,2,2,2,2,2,2,1,1,1,2,1},
             {1,2,1,0,0,2,1,1,2,1,1,2,1,1,2,0,0,1,2,1},
             {1,2,1,1,1,2,1,1,2,1,1,2,1,1,2,1,1,1,2,1},
-            {1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1},
+            {1,4,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,4,1},
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
         };
         
         // Nivel 3 - Diseño avanzado
         int[][] level3 = {
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-            {1,2,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,2,2,1},
+            {1,4,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,2,4,1},
             {1,2,1,1,1,1,1,1,2,1,1,2,1,1,1,1,1,1,2,1},
             {1,2,1,0,0,0,0,1,2,1,1,2,1,0,0,0,0,1,2,1},
             {1,2,1,0,1,1,0,1,2,1,1,2,1,0,1,1,0,1,2,1},
@@ -109,7 +111,7 @@ public class Board extends JPanel implements ActionListener {
             {1,2,1,0,0,0,0,1,2,1,1,2,1,0,0,0,0,1,2,1},
             {1,2,1,1,1,1,1,1,2,1,1,2,1,1,1,1,1,1,2,1},
             {1,2,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,2,2,1},
-            {1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1},
+            {1,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,1},
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
         };
         
@@ -122,11 +124,12 @@ public class Board extends JPanel implements ActionListener {
         currentLevel = levelIndex;
         int[][] level = levels[levelIndex];
         points = new boolean[20][20];
+        powerPellets = new boolean[20][20];
         totalPoints = 0;
         collectedPoints = 0;
         gameWon = false;
         
-        // Inicializar puntos basados en el nivel
+        // Inicializar puntos y power pellets basados en el nivel
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
                 if (level[i][j] == POINT) {
@@ -134,6 +137,13 @@ public class Board extends JPanel implements ActionListener {
                     totalPoints++;
                 } else {
                     points[i][j] = false;
+                }
+                
+                if (level[i][j] == POWER_PELLET) {
+                    powerPellets[i][j] = true;
+                    totalPoints++;
+                } else {
+                    powerPellets[i][j] = false;
                 }
             }
         }
@@ -187,6 +197,13 @@ public class Board extends JPanel implements ActionListener {
         
         // Draw level info
         g.drawString("Nivel: " + (currentLevel + 1), 250, 25);
+        
+        // Draw power-up timer if active
+        if (pacman.isPoweredUp()) {
+            long remaining = pacman.getRemainingPowerUpTime();
+            g.setColor(Color.GREEN);
+            g.drawString("Power: " + (remaining / 1000) + "s", 320, 25);
+        }
     }
 
     private void drawBoard(Graphics g) {
@@ -214,6 +231,10 @@ public class Board extends JPanel implements ActionListener {
                     // Dibujar punto
                     g.setColor(Color.WHITE);
                     g.fillOval(x + blockSize/2 - 2, y + blockSize/2 - 2, 4, 4);
+                } else if (powerPellets[i][j]) {
+                    // Dibujar power pellet (más grande y brillante)
+                    g.setColor(Color.WHITE);
+                    g.fillOval(x + blockSize/2 - 5, y + blockSize/2 - 5, 10, 10);
                 }
             }
         }
@@ -226,6 +247,14 @@ public class Board extends JPanel implements ActionListener {
             for (Ghost ghost : ghosts) {
                 ghost.move();
             }
+            
+            // Update ghost frightened state based on power-up
+            if (!pacman.isPoweredUp()) {
+                for (Ghost ghost : ghosts) {
+                    ghost.setFrightened(false);
+                }
+            }
+            
             checkCollisions();
         }
         repaint();
@@ -266,6 +295,43 @@ public class Board extends JPanel implements ActionListener {
                     nextLevelTimer.start();
                 }
             }
+            
+            // Verificar colisión con power pellets
+            if (powerPellets[pacRow][pacCol]) {
+                powerPellets[pacRow][pacCol] = false;
+                pacman.addScore(50);
+                collectedPoints++;
+                
+                // Activar power-up
+                pacman.activatePowerUp();
+                for (Ghost ghost : ghosts) {
+                    ghost.setFrightened(true);
+                }
+                
+                // Verificar si completó el nivel
+                if (collectedPoints >= totalPoints) {
+                    gameWon = true;
+                    timer.stop();
+                    
+                    // Después de 2 segundos, cargar siguiente nivel
+                    Timer nextLevelTimer = new Timer(2000, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if (currentLevel < 2) {
+                                loadLevel(currentLevel + 1);
+                                timer.start();
+                            } else {
+                                // Juego completado
+                                JOptionPane.showMessageDialog(Board.this, 
+                                    "¡Felicidades! Has completado todos los niveles.\nPuntuación final: " + pacman.getScore());
+                            }
+                            ((Timer)e.getSource()).stop();
+                        }
+                    });
+                    nextLevelTimer.setRepeats(false);
+                    nextLevelTimer.start();
+                }
+            }
         }
         
         // Verificar colisión con fantasmas
@@ -273,8 +339,15 @@ public class Board extends JPanel implements ActionListener {
         for (Ghost ghost : ghosts) {
             if (Math.abs(pacman.getX() - ghost.getX()) < characterSize && 
                 Math.abs(pacman.getY() - ghost.getY()) < characterSize) {
-                handlePacmanCaught();
-                break;
+                if (pacman.isPoweredUp() && ghost.isFrightened()) {
+                    // Pacman come al fantasma
+                    pacman.addScore(200);
+                    ghost.sendToStart();
+                } else if (!ghost.isFrightened()) {
+                    // Fantasma atrapa a Pacman
+                    handlePacmanCaught();
+                    break;
+                }
             }
         }
     }

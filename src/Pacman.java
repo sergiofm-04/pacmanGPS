@@ -4,6 +4,7 @@ import java.awt.event.*;
 public class Pacman {
     private static final int CHARACTER_SIZE = 15;
     private static final int INITIAL_LIVES = 3;
+    private static final int POWER_UP_DURATION_MS = 10000; // 10 seconds
     
     private int x, y;
     private int startX, startY;
@@ -11,6 +12,8 @@ public class Pacman {
     private int score = 0;
     private int lives = INITIAL_LIVES;
     private Board board;
+    private boolean poweredUp = false;
+    private long powerUpEndTime = 0;
 
     public Pacman(int x, int y, Board board) {
         this.x = x;
@@ -104,5 +107,25 @@ public class Pacman {
     
     public int getY() {
         return y;
+    }
+    
+    public void activatePowerUp() {
+        poweredUp = true;
+        powerUpEndTime = System.currentTimeMillis() + POWER_UP_DURATION_MS;
+    }
+    
+    public boolean isPoweredUp() {
+        if (poweredUp && System.currentTimeMillis() > powerUpEndTime) {
+            poweredUp = false;
+        }
+        return poweredUp;
+    }
+    
+    public long getRemainingPowerUpTime() {
+        if (!poweredUp) {
+            return 0;
+        }
+        long remaining = powerUpEndTime - System.currentTimeMillis();
+        return remaining > 0 ? remaining : 0;
     }
 }
