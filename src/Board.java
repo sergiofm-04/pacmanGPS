@@ -5,6 +5,8 @@ import java.awt.event.*;
 public class Board extends JPanel implements ActionListener {
     private static final int RESPAWN_DELAY_MS = 1000;
     private static final int STATUS_PANEL_HEIGHT = 40;
+    private static final Color GHOST_HOUSE_FILL = new Color(100, 50, 150);
+    private static final Color GHOST_HOUSE_BORDER = new Color(150, 100, 200);
     
     private Timer timer;
     private Pacman pacman;
@@ -19,7 +21,7 @@ public class Board extends JPanel implements ActionListener {
     private int[] ghostStartX;
     private int[] ghostStartY;
     
-    // 0 = espacio vacío, 1 = pared, 2 = punto, 3 = casa de fantasmas
+    // 0 = empty space, 1 = wall, 2 = point, 3 = ghost house
     private static final int EMPTY = 0;
     private static final int WALL = 1;
     private static final int POINT = 2;
@@ -203,10 +205,10 @@ public class Board extends JPanel implements ActionListener {
                     g.setColor(Color.CYAN);
                     g.drawRect(x, y, blockSize, blockSize);
                 } else if (level[i][j] == GHOST_HOUSE) {
-                    // Dibujar casa de fantasmas con paredes especiales
-                    g.setColor(new Color(100, 50, 150)); // Color morado oscuro
+                    // Draw ghost house with special walls
+                    g.setColor(GHOST_HOUSE_FILL);
                     g.fillRect(x, y, blockSize, blockSize);
-                    g.setColor(new Color(150, 100, 200)); // Color morado claro para el borde
+                    g.setColor(GHOST_HOUSE_BORDER);
                     g.drawRect(x, y, blockSize, blockSize);
                 } else if (points[i][j]) {
                     // Dibujar punto
