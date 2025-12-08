@@ -349,4 +349,64 @@ public class PacmanTest {
         
         verify(mockKeyEvent, atLeast(5)).getKeyCode();
     }
+
+    @Test
+    public void testEdgeCollisionTopRight() {
+        // Test when only top-right corner hits a wall (should still move since other corners are free)
+        when(mockBoard.isWallForPacman(anyInt(), anyInt())).thenAnswer(invocation -> {
+            int x = invocation.getArgument(0);
+            int y = invocation.getArgument(1);
+            // Return true only for a specific position that would be the new top-right corner
+            return (x >= 104 && x <= 118) && y == 100;
+        });
+        
+        when(mockKeyEvent.getKeyCode()).thenReturn(KeyEvent.VK_RIGHT);
+        pacman.keyPressed(mockKeyEvent);
+        
+        int initialX = pacman.getX();
+        pacman.move();
+        
+        // Should be blocked because top-right corner (newX + 14) hits wall
+        assertEquals(initialX, pacman.getX());
+    }
+
+    @Test
+    public void testEdgeCollisionBottomLeft() {
+        // Test when only bottom-left corner hits a wall
+        when(mockBoard.isWallForPacman(anyInt(), anyInt())).thenAnswer(invocation -> {
+            int x = invocation.getArgument(0);
+            int y = invocation.getArgument(1);
+            // Return true for bottom-left corner area
+            return x == 100 && (y >= 104 && y <= 118);
+        });
+        
+        when(mockKeyEvent.getKeyCode()).thenReturn(KeyEvent.VK_DOWN);
+        pacman.keyPressed(mockKeyEvent);
+        
+        int initialY = pacman.getY();
+        pacman.move();
+        
+        // Should be blocked
+        assertEquals(initialY, pacman.getY());
+    }
+
+    @Test
+    public void testEdgeCollisionBottomRight() {
+        // Test when bottom-right corner hits a wall
+        when(mockBoard.isWallForPacman(anyInt(), anyInt())).thenAnswer(invocation -> {
+            int x = invocation.getArgument(0);
+            int y = invocation.getArgument(1);
+            // Wall at bottom-right area
+            return (x >= 104 && x <= 118) && (y >= 104 && y <= 118);
+        });
+        
+        when(mockKeyEvent.getKeyCode()).thenReturn(KeyEvent.VK_RIGHT);
+        pacman.keyPressed(mockKeyEvent);
+        
+        int initialX = pacman.getX();
+        pacman.move();
+        
+        // Should be blocked by wall at bottom-right
+        assertEquals(initialX, pacman.getX());
+    }
 }

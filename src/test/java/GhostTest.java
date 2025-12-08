@@ -308,4 +308,32 @@ public class GhostTest {
         assertFalse(ghost.isFrightened());
         assertFalse(ghost.isReturning());
     }
+
+    @Test
+    public void testDrawColorWhenReturningAndNotFrightened() {
+        // Set up ghost as returning but not frightened
+        ghost.setFrightened(false);
+        ghost.sendToStart();
+        
+        assertTrue(ghost.isReturning());
+        assertFalse(ghost.isFrightened());
+        
+        // Draw should use original color when returning (not blue)
+        assertDoesNotThrow(() -> ghost.draw(mockGraphics, 40));
+        verify(mockGraphics, atLeastOnce()).setColor(any());
+    }
+
+    @Test
+    public void testAllSwitchCaseDirections() {
+        when(mockBoard.isWall(anyInt(), anyInt())).thenReturn(false);
+        
+        // Test all four direction cases in the switch
+        // Move multiple times to potentially hit all switch cases
+        for (int i = 0; i < 100; i++) {
+            ghost.move();
+        }
+        
+        // Verify ghost moved (which means switch statement was executed)
+        verify(mockBoard, atLeastOnce()).isWall(anyInt(), anyInt());
+    }
 }

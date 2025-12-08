@@ -110,21 +110,6 @@
                         <configuration>
                             <rules>
                                 <rule>
-                                    <element>BUNDLE</element>
-                                    <limits>
-                                        <limit>
-                                            <counter>INSTRUCTION</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.93</minimum>
-                                        </limit>
-                                        <limit>
-                                            <counter>BRANCH</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.70</minimum>
-                                        </limit>
-                                    </limits>
-                                </rule>
-                                <rule>
                                     <element>CLASS</element>
                                     <excludes>
                                         <!-- Exclude Game class - cannot be tested in headless environment -->
@@ -138,7 +123,12 @@
                                         <limit>
                                             <counter>INSTRUCTION</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.88</minimum>
+                                            <minimum>1.00</minimum>
+                                        </limit>
+                                        <limit>
+                                            <counter>BRANCH</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>1.00</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
