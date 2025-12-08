@@ -2,8 +2,6 @@ import java.awt.*;
 import java.util.Random;
 
 public class Ghost {
-    private static final int CHARACTER_SIZE = 15;
-    
     private int x, y;
     private Direction direction;
     private Color color;
@@ -20,7 +18,8 @@ public class Ghost {
 
     public void draw(Graphics g) {
         g.setColor(color);
-        g.fillOval(x, y, CHARACTER_SIZE, CHARACTER_SIZE);
+        int size = Pacman.getCharacterSize();
+        g.fillOval(x, y, size, size);
     }
 
     public void move() {
@@ -40,7 +39,7 @@ public class Ghost {
         }
         
         // Verificar colisión con paredes
-        int edge = CHARACTER_SIZE - 1;
+        int edge = Pacman.getCharacterSize() - 1;
         if (!board.isWall(newX, newY) && 
             !board.isWall(newX + edge, newY) && 
             !board.isWall(newX, newY + edge) && 
@@ -63,7 +62,7 @@ public class Ghost {
         }
         
         // Mantener al fantasma dentro de los límites verticales
-        int maxY = board.getBoardHeight() - CHARACTER_SIZE;
+        int maxY = board.getBoardHeight() - Pacman.getCharacterSize();
         if (y < 0) y = 0;
         if (y > maxY) y = maxY;
     }
