@@ -3,20 +3,28 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SoundManager {
-    private static SoundManager instance;
+    private static volatile SoundManager instance;
     private Map<String, byte[]> soundData;
     private boolean soundEnabled = true;
+    private ExecutorService soundExecutor;
     
     private SoundManager() {
         soundData = new HashMap<>();
+        soundExecutor = Executors.newFixedThreadPool(4); // Limit concurrent sound threads
         loadSounds();
     }
     
     public static SoundManager getInstance() {
         if (instance == null) {
-            instance = new SoundManager();
+            synchronized (SoundManager.class) {
+                if (instance == null) {
+                    instance = new SoundManager();
+                }
+            }
         }
         return instance;
     }
@@ -107,8 +115,9 @@ public class SoundManager {
             return;
         }
         
-        // Play sound in a separate thread to avoid blocking game
-        new Thread(() -> {
+        // Play sound using thread pool to avoid resource exhaustion
+        soundExecutor.execute(() -> {
+            Clip clip = null;
             try {
                 // Create audio format
                 AudioFormat format = new AudioFormat(
@@ -120,29 +129,38 @@ public class SoundManager {
                 );
                 
                 // Create audio input stream
-                ByteArrayInputStream bais = new ByteArrayInputStream(data);
-                AudioInputStream audioInputStream = new AudioInputStream(
-                    bais, format, data.length / format.getFrameSize()
-                );
-                
-                // Get and open a clip
-                Clip clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-                
-                // Add listener to close clip after playing
-                clip.addLineListener(event -> {
-                    if (event.getType() == LineEvent.Type.STOP) {
-                        clip.close();
+                try (ByteArrayInputStream bais = new ByteArrayInputStream(data);
+                     AudioInputStream audioInputStream = new AudioInputStream(
+                         bais, format, data.length / format.getFrameSize())) {
+                    
+                    // Get and open a clip
+                    clip = AudioSystem.getClip();
+                    final Clip finalClip = clip;
+                    clip.open(audioInputStream);
+                    
+                    // Add listener to close clip after playing
+                    clip.addLineListener(event -> {
+                        if (event.getType() == LineEvent.Type.STOP) {
+                            finalClip.close();
+                        }
+                    });
+                    
+                    // Start playing
+                    clip.start();
+                    
+                    // Wait for clip to finish
+                    while (clip.isRunning()) {
+                        Thread.sleep(10);
                     }
-                });
+                }
                 
-                // Start playing
-                clip.start();
-                
-            } catch (LineUnavailableException | IOException e) {
+            } catch (LineUnavailableException | IOException | InterruptedException e) {
                 System.err.println("Error playing sound: " + e.getMessage());
+                if (clip != null && clip.isOpen()) {
+                    clip.close();
+                }
             }
-        }).start();
+        });
     }
     
     public void setSoundEnabled(boolean enabled) {
