@@ -3,6 +3,9 @@ import java.util.Random;
 
 public class Ghost {
     private static final int HALF_CIRCLE_DEGREES = 180;
+    private static final int FRIGHTENED_SPEED = 2;
+    private static final int NORMAL_SPEED = 4;
+    private static final int RETURNING_DURATION_FRAMES = 50;
     
     private int x, y;
     private int startX, startY;
@@ -77,7 +80,7 @@ public class Ghost {
         
         int newX = x;
         int newY = y;
-        int speed = frightened ? 2 : 4; // Slower when frightened
+        int speed = frightened ? FRIGHTENED_SPEED : NORMAL_SPEED; // Slower when frightened
         
         switch (direction) {
             case LEFT: newX -= speed; break;
@@ -138,6 +141,6 @@ public class Ghost {
     
     public void sendToStart() {
         returning = true;
-        returningTimer = 50; // About 2 seconds at 40ms per frame
+        returningTimer = RETURNING_DURATION_FRAMES; // About 2 seconds at 40ms per frame
     }
 }

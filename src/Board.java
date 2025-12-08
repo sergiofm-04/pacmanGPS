@@ -260,6 +260,31 @@ public class Board extends JPanel implements ActionListener {
         repaint();
     }
     
+    private void checkLevelCompletion() {
+        if (collectedPoints >= totalPoints) {
+            gameWon = true;
+            timer.stop();
+            
+            // Después de 2 segundos, cargar siguiente nivel
+            Timer nextLevelTimer = new Timer(2000, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (currentLevel < 2) {
+                        loadLevel(currentLevel + 1);
+                        timer.start();
+                    } else {
+                        // Juego completado
+                        JOptionPane.showMessageDialog(Board.this, 
+                            "¡Felicidades! Has completado todos los niveles.\nPuntuación final: " + pacman.getScore());
+                    }
+                    ((Timer)e.getSource()).stop();
+                }
+            });
+            nextLevelTimer.setRepeats(false);
+            nextLevelTimer.start();
+        }
+    }
+    
     private void checkCollisions() {
         // Verificar colisión con puntos
         int pacRow = pacman.getY() / blockSize;
@@ -270,30 +295,7 @@ public class Board extends JPanel implements ActionListener {
                 points[pacRow][pacCol] = false;
                 pacman.addScore(10);
                 collectedPoints++;
-                
-                // Verificar si completó el nivel
-                if (collectedPoints >= totalPoints) {
-                    gameWon = true;
-                    timer.stop();
-                    
-                    // Después de 2 segundos, cargar siguiente nivel
-                    Timer nextLevelTimer = new Timer(2000, new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            if (currentLevel < 2) {
-                                loadLevel(currentLevel + 1);
-                                timer.start();
-                            } else {
-                                // Juego completado
-                                JOptionPane.showMessageDialog(Board.this, 
-                                    "¡Felicidades! Has completado todos los niveles.\nPuntuación final: " + pacman.getScore());
-                            }
-                            ((Timer)e.getSource()).stop();
-                        }
-                    });
-                    nextLevelTimer.setRepeats(false);
-                    nextLevelTimer.start();
-                }
+                checkLevelCompletion();
             }
             
             // Verificar colisión con power pellets
@@ -308,29 +310,7 @@ public class Board extends JPanel implements ActionListener {
                     ghost.setFrightened(true);
                 }
                 
-                // Verificar si completó el nivel
-                if (collectedPoints >= totalPoints) {
-                    gameWon = true;
-                    timer.stop();
-                    
-                    // Después de 2 segundos, cargar siguiente nivel
-                    Timer nextLevelTimer = new Timer(2000, new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            if (currentLevel < 2) {
-                                loadLevel(currentLevel + 1);
-                                timer.start();
-                            } else {
-                                // Juego completado
-                                JOptionPane.showMessageDialog(Board.this, 
-                                    "¡Felicidades! Has completado todos los niveles.\nPuntuación final: " + pacman.getScore());
-                            }
-                            ((Timer)e.getSource()).stop();
-                        }
-                    });
-                    nextLevelTimer.setRepeats(false);
-                    nextLevelTimer.start();
-                }
+                checkLevelCompletion();
             }
         }
         
