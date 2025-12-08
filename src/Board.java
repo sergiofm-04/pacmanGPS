@@ -260,6 +260,14 @@ public class Board extends JPanel implements ActionListener {
     public int getBlockSize() {
         return blockSize;
     }
+    
+    public int getBoardWidth() {
+        return 20 * blockSize;
+    }
+    
+    public int getBoardHeight() {
+        return 20 * blockSize;
+    }
 
     private class PacmanKeyAdapter extends KeyAdapter {
         @Override

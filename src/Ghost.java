@@ -50,10 +50,12 @@ public class Ghost {
         }
         
         // Mantener al fantasma dentro de los límites
+        int maxX = board.getBoardWidth() - 20;
+        int maxY = board.getBoardHeight() - 20;
         if (x < 0) x = 0;
         if (y < 0) y = 0;
-        if (x > 380) x = 380;
-        if (y > 380) y = 380;
+        if (x > maxX) x = maxX;
+        if (y > maxY) y = maxY;
     }
     
     public int getX() {
