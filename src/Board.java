@@ -13,6 +13,8 @@ public class Board extends JPanel implements ActionListener {
     private int totalPoints;
     private int collectedPoints = 0;
     private boolean gameWon = false;
+    private int[] ghostStartX;
+    private int[] ghostStartY;
     
     // 0 = espacio vacío, 1 = pared, 2 = punto
     private static final int EMPTY = 0;
@@ -134,10 +136,12 @@ public class Board extends JPanel implements ActionListener {
         pacman = new Pacman(blockSize * 1, blockSize * 1, this);
         
         // Posicionar fantasmas
+        ghostStartX = new int[] {blockSize * 9, blockSize * 10, blockSize * 9};
+        ghostStartY = new int[] {blockSize * 9, blockSize * 9, blockSize * 10};
         ghosts = new Ghost[] {
-            new Ghost(blockSize * 9, blockSize * 9, Color.RED, this),
-            new Ghost(blockSize * 10, blockSize * 9, Color.PINK, this),
-            new Ghost(blockSize * 9, blockSize * 10, Color.CYAN, this)
+            new Ghost(ghostStartX[0], ghostStartY[0], Color.RED, this),
+            new Ghost(ghostStartX[1], ghostStartY[1], Color.PINK, this),
+            new Ghost(ghostStartX[2], ghostStartY[2], Color.CYAN, this)
         };
     }
 
@@ -182,7 +186,7 @@ public class Board extends JPanel implements ActionListener {
         
         // Dibujar información
         g.setColor(Color.YELLOW);
-        g.drawString("Score: " + pacman.getScore() + " | Nivel: " + (currentLevel + 1) + " | Puntos: " + collectedPoints + "/" + totalPoints, 10, 410);
+        g.drawString("Score: " + pacman.getScore() + " | Nivel: " + (currentLevel + 1) + " | Puntos: " + collectedPoints + "/" + totalPoints + " | Vidas: " + pacman.getLives(), 10, 410);
     }
 
     @Override
@@ -236,13 +240,41 @@ public class Board extends JPanel implements ActionListener {
         
         // Verificar colisión con fantasmas
         for (Ghost ghost : ghosts) {
-            if (Math.abs(pacman.getX() - ghost.getX()) < blockSize && 
-                Math.abs(pacman.getY() - ghost.getY()) < blockSize) {
-                timer.stop();
-                JOptionPane.showMessageDialog(this, 
-                    "¡Game Over! Un fantasma te atrapó.\nPuntuación: " + pacman.getScore());
-                System.exit(0);
+            if (Math.abs(pacman.getX() - ghost.getX()) < 15 && 
+                Math.abs(pacman.getY() - ghost.getY()) < 15) {
+                handlePacmanCaught();
+                break;
             }
+        }
+    }
+    
+    private void handlePacmanCaught() {
+        pacman.loseLife();
+        
+        if (pacman.getLives() <= 0) {
+            // Game Over
+            timer.stop();
+            JOptionPane.showMessageDialog(this, 
+                "¡Game Over! Un fantasma te atrapó.\nPuntuación: " + pacman.getScore());
+            System.exit(0);
+        } else {
+            // Resetear posiciones pero mantener el progreso
+            timer.stop();
+            pacman.resetPosition();
+            for (int i = 0; i < ghosts.length; i++) {
+                ghosts[i].resetPosition(ghostStartX[i], ghostStartY[i]);
+            }
+            
+            // Pausar brevemente antes de continuar
+            Timer respawnTimer = new Timer(1000, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    timer.start();
+                    ((Timer)e.getSource()).stop();
+                }
+            });
+            respawnTimer.setRepeats(false);
+            respawnTimer.start();
         }
     }
     

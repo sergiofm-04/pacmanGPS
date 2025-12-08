@@ -18,7 +18,7 @@ public class Ghost {
 
     public void draw(Graphics g) {
         g.setColor(color);
-        g.fillOval(x, y, 20, 20);
+        g.fillOval(x, y, 15, 15);
     }
 
     public void move() {
@@ -39,9 +39,9 @@ public class Ghost {
         
         // Verificar colisión con paredes
         if (!board.isWall(newX, newY) && 
-            !board.isWall(newX + 19, newY) && 
-            !board.isWall(newX, newY + 19) && 
-            !board.isWall(newX + 19, newY + 19)) {
+            !board.isWall(newX + 14, newY) && 
+            !board.isWall(newX, newY + 14) && 
+            !board.isWall(newX + 14, newY + 14)) {
             x = newX;
             y = newY;
         } else {
@@ -60,9 +60,14 @@ public class Ghost {
         }
         
         // Mantener al fantasma dentro de los límites verticales
-        int maxY = board.getBoardHeight() - 20;
+        int maxY = board.getBoardHeight() - 15;
         if (y < 0) y = 0;
         if (y > maxY) y = maxY;
+    }
+    
+    public void resetPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
     
     public int getX() {
