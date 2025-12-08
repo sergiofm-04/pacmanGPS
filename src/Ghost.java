@@ -16,10 +16,10 @@ public class Ghost {
         this.direction = Direction.values()[random.nextInt(4)];
     }
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g, int yOffset) {
         g.setColor(color);
         int size = Pacman.getCharacterSize();
-        g.fillOval(x, y, size, size);
+        g.fillOval(x, y + yOffset, size, size);
     }
 
     public void move() {

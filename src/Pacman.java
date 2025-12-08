@@ -20,9 +20,9 @@ public class Pacman {
         this.board = board;
     }
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g, int yOffset) {
         g.setColor(Color.YELLOW);
-        g.fillArc(x, y, CHARACTER_SIZE, CHARACTER_SIZE, direction.getAngle(), 300);
+        g.fillArc(x, y + yOffset, CHARACTER_SIZE, CHARACTER_SIZE, direction.getAngle(), 300);
     }
 
     public void move() {
