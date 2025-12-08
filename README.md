@@ -15,28 +15,68 @@ Juego básico de Pac-Man desarrollado en Java utilizando Swing para la interfaz 
 
 ```
 src/
-├── Game.java         # Clase principal: inicializa la ventana y el juego
-├── Board.java        # Lógica y renderizado del tablero
-├── Pacman.java       # Lógica y renderizado de Pac-Man
-├── Ghost.java        # Lógica y renderizado de los fantasmas
-└── Direction.java    # Enum para las direcciones de movimiento
+├── main/java/            # Código fuente principal
+│   ├── Game.java         # Clase principal: inicializa la ventana y el juego
+│   ├── Board.java        # Lógica y renderizado del tablero
+│   ├── Pacman.java       # Lógica y renderizado de Pac-Man
+│   ├── Ghost.java        # Lógica y renderizado de los fantasmas
+│   ├── Direction.java    # Enum para las direcciones de movimiento
+│   └── SoundManager.java # Gestor de efectos de sonido
+└── test/java/            # Tests unitarios (132 tests, 93% cobertura)
+    ├── GameTest.java
+    ├── BoardTest.java
+    ├── PacmanTest.java
+    ├── GhostTest.java
+    ├── DirectionTest.java
+    └── SoundManagerTest.java
 ```
 
 ## Requisitos
 
-- Java 8 o superior
+- Java 17 o superior
+- Maven 3.8+ (para gestión de dependencias y tests)
 - (Opcional) IDE como IntelliJ IDEA, Eclipse, VSCode, etc.
 
 ## Compilación y Ejecución
 
-Desde la terminal, navega al directorio raíz y ejecuta:
+### Con Maven (Recomendado)
 
 ```bash
-javac -d bin src/*.java
+# Compilar el proyecto
+mvn compile
+
+# Ejecutar el juego
+mvn exec:java -Dexec.mainClass="Game"
+
+# Compilar y empaquetar
+mvn package
+```
+
+### Compilación Manual
+
+```bash
+javac -d bin src/main/java/*.java
 java -cp bin Game
 ```
 
-O si usas un IDE, simplemente importa el proyecto y ejecuta la clase `Game`.
+O si usas un IDE, simplemente importa el proyecto Maven y ejecuta la clase `Game`.
+
+## Tests
+
+Este proyecto incluye una suite completa de 132 tests unitarios con 93% de cobertura de código.
+
+```bash
+# Ejecutar todos los tests
+mvn test
+
+# Generar reporte de cobertura
+mvn test jacoco:report
+
+# Ver reporte HTML
+open target/site/jacoco/index.html
+```
+
+Para más detalles sobre los tests, consulta [TEST_COVERAGE.md](TEST_COVERAGE.md).
 
 ## Controles
 
