@@ -3,23 +3,34 @@ import java.util.Random;
 
 public class Ghost {
     private static final int HALF_CIRCLE_DEGREES = 180;
+    private static final int FRIGHTENED_SPEED = 2;
+    private static final int NORMAL_SPEED = 4;
+    private static final int RETURNING_DURATION_FRAMES = 50;
     
     private int x, y;
+    private int startX, startY;
     private Direction direction;
     private Color color;
     private Random random = new Random();
     private Board board;
+    private boolean frightened = false;
+    private boolean returning = false;
+    private int returningTimer = 0;
 
     public Ghost(int x, int y, Color color, Board board) {
         this.x = x;
         this.y = y;
+        this.startX = x;
+        this.startY = y;
         this.color = color;
         this.board = board;
         this.direction = Direction.values()[random.nextInt(4)];
     }
 
     public void draw(Graphics g, int yOffset) {
-        g.setColor(color);
+        // Use blue color when frightened, otherwise use normal color
+        Color drawColor = (frightened && !returning) ? Color.BLUE : color;
+        g.setColor(drawColor);
         int size = Pacman.getCharacterSize();
         int adjustedY = y + yOffset;
         
@@ -51,13 +62,25 @@ public class Ghost {
     }
 
     public void move() {
+        // If returning to start, handle countdown
+        if (returning) {
+            returningTimer--;
+            if (returningTimer <= 0) {
+                x = startX;
+                y = startY;
+                returning = false;
+                frightened = false;
+            }
+            return; // Don't move while returning countdown
+        }
+        
         if (random.nextInt(10) == 0) {
             direction = Direction.values()[random.nextInt(4)];
         }
         
         int newX = x;
         int newY = y;
-        int speed = 4;
+        int speed = frightened ? FRIGHTENED_SPEED : NORMAL_SPEED; // Slower when frightened
         
         switch (direction) {
             case LEFT: newX -= speed; break;
@@ -98,6 +121,9 @@ public class Ghost {
     public void resetPosition(int x, int y) {
         this.x = x;
         this.y = y;
+        // Reset returning state when position is reset
+        this.returning = false;
+        this.returningTimer = 0;
     }
     
     public int getX() {
@@ -106,5 +132,22 @@ public class Ghost {
     
     public int getY() {
         return y;
+    }
+    
+    public void setFrightened(boolean frightened) {
+        this.frightened = frightened;
+    }
+    
+    public boolean isFrightened() {
+        return frightened && !returning;
+    }
+    
+    public boolean isReturning() {
+        return returning;
+    }
+    
+    public void sendToStart() {
+        returning = true;
+        returningTimer = RETURNING_DURATION_FRAMES; // About 2 seconds (depends on Board timer interval)
     }
 }
