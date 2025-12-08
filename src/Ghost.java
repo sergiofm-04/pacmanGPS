@@ -141,6 +141,6 @@ public class Ghost {
     
     public void sendToStart() {
         returning = true;
-        returningTimer = RETURNING_DURATION_FRAMES; // About 2 seconds at 40ms per frame
+        returningTimer = RETURNING_DURATION_FRAMES; // About 2 seconds (depends on Board timer interval)
     }
 }

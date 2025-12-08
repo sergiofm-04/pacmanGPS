@@ -319,12 +319,12 @@ public class Board extends JPanel implements ActionListener {
         for (Ghost ghost : ghosts) {
             if (Math.abs(pacman.getX() - ghost.getX()) < characterSize && 
                 Math.abs(pacman.getY() - ghost.getY()) < characterSize) {
-                if (pacman.isPoweredUp() && ghost.isFrightened()) {
-                    // Pacman come al fantasma
+                if (ghost.isFrightened()) {
+                    // Pacman come al fantasma cuando está asustado
                     pacman.addScore(200);
                     ghost.sendToStart();
-                } else if (!ghost.isFrightened()) {
-                    // Fantasma atrapa a Pacman
+                } else {
+                    // Fantasma atrapa a Pacman (incluso durante power-up si el fantasma no está asustado)
                     handlePacmanCaught();
                     break;
                 }
