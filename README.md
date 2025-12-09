@@ -78,6 +78,20 @@ open target/site/jacoco/index.html
 
 Para más detalles sobre los tests, consulta [TEST_COVERAGE.md](TEST_COVERAGE.md).
 
+## Integración y Prueba Continua (CI/CT)
+
+Este proyecto utiliza GitHub Actions para automatizar el proceso de integración y pruebas continuas. El workflow `CI/CT` se ejecuta automáticamente en cada push o pull request a las ramas `main` y `develop`.
+
+### Proceso automatizado:
+
+1. **Compilación**: Instala dependencias y compila el proyecto con `mvn clean install`
+2. **Pruebas**: Ejecuta todas las pruebas unitarias con `mvn test`
+3. **Cobertura**: Genera reporte de cobertura de código con JaCoCo
+4. **Artefactos**: Publica reportes de cobertura y resultados de tests como artefactos del workflow
+5. **Notificaciones**: Reporta el estado (éxito/fallo) directamente en el commit o pull request
+
+Los reportes de cobertura y resultados de tests están disponibles como artefactos descargables en cada ejecución del workflow durante 30 días.
+
 ## Controles
 
 - **Flechas del teclado** para mover a Pac-Man: izquierda, derecha, arriba, abajo.
