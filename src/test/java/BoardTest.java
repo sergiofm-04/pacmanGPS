@@ -517,8 +517,7 @@ public class BoardTest {
             try {
                 paintMethod.invoke(board, g);
             } catch (Exception e) {
-                // Some operations may fail in headless mode
-                System.out.println("Paint method executed (some operations may have failed in headless): " + e.getMessage());
+                // Some operations may fail in headless mode - this is expected
             }
         });
         
