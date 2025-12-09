@@ -41,3 +41,23 @@ PascalCase).
 - Notifica el estado final (éxito o error) en el pull request o commit correspondiente mediante comentarios o checks de GitHub.
 - Mantén el archivo `copilot-instructions.md` actualizado para reflejar cualquier cambio relevante en el proceso de integración y prueba continua. 
 -  Todos los workflows deben incluir una sección `concurrency` para evitar ejecuciones duplicadas en Pull Requests.
+
+## Despliegue continuo a GitHub Pages con una landing page 
+El proyecto implementa despliegue continuo (CD)  para publicar el .jar generado en una landing 
+page en Github pages.  
+
+### Activación del workflow 
+- Usa el evento `workflow_run` para activar el despliegue.
+- El workflow debe ejecutarse después de que **`ci-ct` ha finalizado con éxito**.
+- Solo se despliega desde la rama `main`. 
+
+### Workflow implementado 
+- Nombre del archivo: `.github/workflows/deploy-pages.yml`
+- **Job Build**:
+  - Configura Java 17 y Maven
+  - Ejecuta `mvn clean package -DskipTests`
+
+- **Job Deploy**:
+  - Configura GitHub Pages
+  - El artefacto es descargable en una landing page en GitHub Pages
+  - Notifica la URL del despliegue 
