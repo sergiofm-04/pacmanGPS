@@ -50,7 +50,9 @@ jobs:
     - name: Crear landing page
       run: |
         mkdir -p pages
+        # Get JAR filename and sanitize it (allow only alphanumeric, dots, hyphens, underscores)
         JAR_NAME="${{ steps.jar-name.outputs.jar_file }}"
+        JAR_NAME=$(echo "$JAR_NAME" | sed 's/[^a-zA-Z0-9._-]//g')
         cat > pages/index.html << EOF
         <!DOCTYPE html>
         <html lang="es">
@@ -197,7 +199,7 @@ jobs:
                     <ul>
                         <li>1. Descargar el archivo JAR</li>
                         <li>2. Abrir terminal en la carpeta de descarga</li>
-                        <li>3. Ejecutar: <code id="run-command" style="background: #e0e0e0; padding: 2px 8px; border-radius: 4px;">java -jar pacmanGPS.jar</code></li>
+                        <li>3. Ejecutar: <code id="run-command" style="background: #e0e0e0; padding: 2px 8px; border-radius: 4px;">java -jar [nombre-del-jar].jar</code></li>
                     </ul>
                 </div>
                 
