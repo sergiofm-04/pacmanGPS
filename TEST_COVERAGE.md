@@ -33,14 +33,14 @@ Este proyecto ahora cuenta con una suite completa de pruebas unitarias que garan
 ### Ubicación
 ```
 src/
-├── main/java/          # Código fuente
+├── main/java/             # Código fuente principal
 │   ├── Board.java
 │   ├── Direction.java
 │   ├── Game.java
 │   ├── Ghost.java
 │   ├── Pacman.java
 │   └── SoundManager.java
-└── test/java/          # Tests unitarios
+└── test/java/             # Tests unitarios
     ├── BoardTest.java
     ├── DirectionTest.java
     ├── GameTest.java

@@ -15,13 +15,14 @@ Juego básico de Pac-Man desarrollado en Java utilizando Swing para la interfaz 
 
 ```
 src/
-├── Game.java             # Clase principal: inicializa la ventana y el juego
-├── Board.java            # Lógica y renderizado del tablero
-├── Pacman.java           # Lógica y renderizado de Pac-Man
-├── Ghost.java            # Lógica y renderizado de los fantasmas
-├── Direction.java        # Enum para las direcciones de movimiento
-├── SoundManager.java     # Gestor de efectos de sonido
-└── test/java/            # Tests unitarios (132+ tests, 100% cobertura)
+├── main/java/            # Código fuente principal
+│   ├── Game.java         # Clase principal: inicializa la ventana y el juego
+│   ├── Board.java        # Lógica y renderizado del tablero
+│   ├── Pacman.java       # Lógica y renderizado de Pac-Man
+│   ├── Ghost.java        # Lógica y renderizado de los fantasmas
+│   ├── Direction.java    # Enum para las direcciones de movimiento
+│   └── SoundManager.java # Gestor de efectos de sonido
+└── test/java/            # Tests unitarios (137+ tests)
     ├── GameTest.java
     ├── BoardTest.java
     ├── PacmanTest.java
@@ -62,7 +63,7 @@ O si usas un IDE, simplemente importa el proyecto Maven y ejecuta la clase `Game
 
 ## Tests
 
-Este proyecto incluye una suite completa de 132 tests unitarios con 93% de cobertura de código.
+Este proyecto incluye una suite completa de 137 tests unitarios con 93% de cobertura de código.
 
 ```bash
 # Ejecutar todos los tests

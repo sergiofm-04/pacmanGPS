@@ -38,7 +38,7 @@ public class GameTest {
             assertNotNull(game);
             assertEquals("Pac-Man", game.getTitle());
             assertEquals(400, game.getWidth());
-            assertEquals(460, game.getHeight());
+            assertEquals(455, game.getHeight());
             assertEquals(JFrame.EXIT_ON_CLOSE, game.getDefaultCloseOperation());
             assertFalse(game.isResizable());
             game.dispose();

@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 public class Board extends JPanel implements ActionListener {
     private static final int RESPAWN_DELAY_MS = 1000;
-    private static final int STATUS_PANEL_HEIGHT = 40;
+    private static final int STATUS_PANEL_HEIGHT = 35;
     private static final Color GHOST_HOUSE_FILL = new Color(100, 50, 150);
     private static final Color GHOST_HOUSE_BORDER = new Color(150, 100, 200);
     
@@ -191,20 +191,20 @@ public class Board extends JPanel implements ActionListener {
         
         // Draw lives
         g.setColor(Color.YELLOW);
-        g.setFont(new Font("Arial", Font.BOLD, 14));
-        g.drawString("Vidas: " + pacman.getLives(), 10, 25);
+        g.setFont(new Font("Arial", Font.BOLD, 12));
+        g.drawString("Vidas: " + pacman.getLives(), 5, 22);
         
         // Draw score
-        g.drawString("Puntos: " + pacman.getScore(), 120, 25);
+        g.drawString("Puntos: " + pacman.getScore(), 85, 22);
         
         // Draw level info
-        g.drawString("Nivel: " + (currentLevel + 1), 250, 25);
+        g.drawString("Nivel: " + (currentLevel + 1), 190, 22);
         
         // Draw power-up timer if active
         if (pacman.isPoweredUp()) {
             long remaining = pacman.getRemainingPowerUpTime();
             g.setColor(Color.GREEN);
-            g.drawString("Power: " + (remaining / 1000) + "s", 320, 25);
+            g.drawString("Power: " + (remaining / 1000) + "s", 270, 22);
         }
     }
 
