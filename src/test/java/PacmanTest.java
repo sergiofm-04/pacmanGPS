@@ -409,4 +409,61 @@ public class PacmanTest {
         // Should be blocked by wall at bottom-right
         assertEquals(initialX, pacman.getX());
     }
+
+    @Test
+    public void testEdgeCollisionMiddleEdge() {
+        // Test collision where wall blocks one specific corner check
+        when(mockBoard.isWallForPacman(anyInt(), anyInt())).thenAnswer(invocation -> {
+            int x = invocation.getArgument(0);
+            int y = invocation.getArgument(1);
+            // Block the middle right position more broadly
+            return x >= 114 && y >= 100 && y <= 115;
+        });
+        
+        when(mockKeyEvent.getKeyCode()).thenReturn(KeyEvent.VK_RIGHT);
+        pacman.keyPressed(mockKeyEvent);
+        
+        int initialX = pacman.getX();
+        pacman.move();
+        
+        // Should be blocked because corners hit wall
+        assertEquals(initialX, pacman.getX());
+    }
+
+    @Test
+    public void testMoveInAllDirectionsWithNoWalls() {
+        // Ensure all 4 directions in switch statement are covered
+        when(mockBoard.isWallForPacman(anyInt(), anyInt())).thenReturn(false);
+        
+        // Test LEFT
+        when(mockKeyEvent.getKeyCode()).thenReturn(KeyEvent.VK_LEFT);
+        pacman.keyPressed(mockKeyEvent);
+        int startX = pacman.getX();
+        pacman.move();
+        assertTrue(pacman.getX() < startX, "Should move left");
+        
+        // Reset and test RIGHT
+        pacman = new Pacman(100, 100, mockBoard);
+        when(mockKeyEvent.getKeyCode()).thenReturn(KeyEvent.VK_RIGHT);
+        pacman.keyPressed(mockKeyEvent);
+        startX = pacman.getX();
+        pacman.move();
+        assertTrue(pacman.getX() > startX, "Should move right");
+        
+        // Reset and test UP
+        pacman = new Pacman(100, 100, mockBoard);
+        when(mockKeyEvent.getKeyCode()).thenReturn(KeyEvent.VK_UP);
+        pacman.keyPressed(mockKeyEvent);
+        int startY = pacman.getY();
+        pacman.move();
+        assertTrue(pacman.getY() < startY, "Should move up");
+        
+        // Reset and test DOWN
+        pacman = new Pacman(100, 100, mockBoard);
+        when(mockKeyEvent.getKeyCode()).thenReturn(KeyEvent.VK_DOWN);
+        pacman.keyPressed(mockKeyEvent);
+        startY = pacman.getY();
+        pacman.move();
+        assertTrue(pacman.getY() > startY, "Should move down");
+    }
 }

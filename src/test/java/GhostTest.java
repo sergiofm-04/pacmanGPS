@@ -336,4 +336,45 @@ public class GhostTest {
         // Verify ghost moved (which means switch statement was executed)
         verify(mockBoard, atLeastOnce()).isWall(anyInt(), anyInt());
     }
+
+    @Test
+    public void testDrawColorCombinationFrightenedAndReturning() {
+        // Test the specific case: frightened=true, returning=true
+        // This is a rare state but possible temporarily
+        ghost.setFrightened(true);
+        ghost.sendToStart(); // This sets returning=true
+        
+        // At this point: frightened should be false (sendToStart clears it) and returning should be true
+        assertFalse(ghost.isFrightened());
+        assertTrue(ghost.isReturning());
+        
+        // Draw should work correctly
+        assertDoesNotThrow(() -> ghost.draw(mockGraphics, 40));
+    }
+
+    @Test
+    public void testDrawColorAllStates() {
+        // Test all possible state combinations for complete branch coverage
+        
+        // State 1: Normal (not frightened, not returning)
+        ghost.setFrightened(false);
+        assertDoesNotThrow(() -> ghost.draw(mockGraphics, 40));
+        
+        // State 2: Frightened only (frightened=true, returning=false)
+        ghost = new Ghost(100, 100, Color.RED, mockBoard);
+        ghost.setFrightened(true);
+        assertTrue(ghost.isFrightened());
+        assertFalse(ghost.isReturning());
+        assertDoesNotThrow(() -> ghost.draw(mockGraphics, 40));
+        
+        // State 3: Returning only (frightened=false, returning=true)
+        ghost = new Ghost(100, 100, Color.RED, mockBoard);
+        ghost.sendToStart();
+        assertFalse(ghost.isFrightened());
+        assertTrue(ghost.isReturning());
+        assertDoesNotThrow(() -> ghost.draw(mockGraphics, 40));
+        
+        // Verify all cases executed
+        verify(mockGraphics, atLeast(3)).setColor(any());
+    }
 }

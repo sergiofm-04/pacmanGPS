@@ -100,4 +100,52 @@ public class SoundManagerTest {
             soundManager.playSound("level_complete");
         });
     }
+
+    @Test
+    public void testPlaySoundWhenDisabledAndReEnabled() {
+        soundManager.setSoundEnabled(false);
+        assertDoesNotThrow(() -> soundManager.playSound("eat_dot"));
+        soundManager.setSoundEnabled(true);
+        assertDoesNotThrow(() -> soundManager.playSound("eat_dot"));
+    }
+
+    @Test
+    public void testPlayUnknownSound() {
+        assertDoesNotThrow(() -> soundManager.playSound("nonexistent_sound"));
+    }
+
+    @Test
+    public void testPlayEmptyString() {
+        assertDoesNotThrow(() -> soundManager.playSound(""));
+    }
+
+    @Test
+    public void testSingletonConsistency() {
+        SoundManager instance1 = SoundManager.getInstance();
+        SoundManager instance2 = SoundManager.getInstance();
+        SoundManager instance3 = SoundManager.getInstance();
+        
+        assertSame(instance1, instance2);
+        assertSame(instance2, instance3);
+        assertSame(instance1, instance3);
+    }
+
+    @Test
+    public void testMultipleSoundCalls() {
+        // Test rapid sound calls
+        for (int i = 0; i < 5; i++) {
+            soundManager.playSound("eat_dot");
+        }
+        
+        // Should not throw exceptions even with many simultaneous sounds
+        assertDoesNotThrow(() -> soundManager.playSound("eat_power"));
+    }
+
+    @Test
+    public void testToggleSoundMultipleTimes() {
+        for (int i = 0; i < 10; i++) {
+            soundManager.setSoundEnabled(i % 2 == 0);
+            assertEquals(i % 2 == 0, soundManager.isSoundEnabled());
+        }
+    }
 }
