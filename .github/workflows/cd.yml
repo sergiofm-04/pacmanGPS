@@ -40,10 +40,17 @@ jobs:
         path: target/*.jar
         retention-days: 90
         
+    - name: Obtener nombre del JAR
+      id: jar-name
+      run: |
+        JAR_FILE=$(ls target/*.jar | xargs -n 1 basename)
+        echo "jar_file=$JAR_FILE" >> $GITHUB_OUTPUT
+        echo "JAR file: $JAR_FILE"
+        
     - name: Crear landing page
       run: |
         mkdir -p pages
-        cat > pages/index.html << 'EOF'
+        cat > pages/index.html << EOF
         <!DOCTYPE html>
         <html lang="es">
         <head>
@@ -174,7 +181,7 @@ jobs:
                 <h1>PacmanGPS</h1>
                 <p>Juego clásico de Pac-Man desarrollado en Java</p>
                 
-                <a href="pacmanGPS-1.0-SNAPSHOT.jar" class="download-btn" download>
+                <a href="${{ steps.jar-name.outputs.jar_file }}" class="download-btn" download>
                     ⬇️ Descargar JAR
                 </a>
                 
@@ -189,7 +196,7 @@ jobs:
                     <ul>
                         <li>1. Descargar el archivo JAR</li>
                         <li>2. Abrir terminal en la carpeta de descarga</li>
-                        <li>3. Ejecutar: <code style="background: #e0e0e0; padding: 2px 8px; border-radius: 4px;">java -jar pacmanGPS-1.0-SNAPSHOT.jar</code></li>
+                        <li>3. Ejecutar: <code style="background: #e0e0e0; padding: 2px 8px; border-radius: 4px;">java -jar ${{ steps.jar-name.outputs.jar_file }}</code></li>
                     </ul>
                 </div>
                 
