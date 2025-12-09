@@ -50,6 +50,7 @@ jobs:
     - name: Crear landing page
       run: |
         mkdir -p pages
+        JAR_NAME="${{ steps.jar-name.outputs.jar_file }}"
         cat > pages/index.html << EOF
         <!DOCTYPE html>
         <html lang="es">
@@ -210,57 +211,18 @@ jobs:
                 </div>
             </div>
             <script>
-                // Automatically detect and link to JAR file
+                // Set up JAR download link
                 window.addEventListener('DOMContentLoaded', function() {
-                    // Get all files in the current directory
-                    fetch(window.location.href)
-                        .then(response => response.text())
-                        .then(html => {
-                            // Try to find JAR file in the page
-                            const parser = new DOMParser();
-                            const doc = parser.parseFromString(html, 'text/html');
-                            const links = doc.querySelectorAll('a[href]');
-                            let jarFile = null;
-                            
-                            links.forEach(link => {
-                                if (link.href.endsWith('.jar')) {
-                                    jarFile = link.href;
-                                }
-                            });
-                            
-                            // If no JAR found in links, look for it directly
-                            if (!jarFile) {
-                                // Default to looking for JAR file pattern
-                                jarFile = 'pacmanGPS-1.0-SNAPSHOT.jar';
-                            }
-                            
-                            // Update download link
-                            const downloadLink = document.getElementById('download-link');
-                            if (jarFile) {
-                                const jarFileName = jarFile.split('/').pop();
-                                downloadLink.href = jarFileName;
-                                downloadLink.download = jarFileName;
-                                
-                                // Update run command
-                                const runCommand = document.getElementById('run-command');
-                                if (runCommand) {
-                                    runCommand.textContent = 'java -jar ' + jarFileName;
-                                }
-                            }
-                        })
-                        .catch(error => {
-                            // Fallback: try common JAR file name
-                            console.log('Attempting fallback JAR detection');
-                            const jarFile = 'pacmanGPS-1.0-SNAPSHOT.jar';
-                            const downloadLink = document.getElementById('download-link');
-                            downloadLink.href = jarFile;
-                            downloadLink.download = jarFile;
-                            
-                            const runCommand = document.getElementById('run-command');
-                            if (runCommand) {
-                                runCommand.textContent = 'java -jar ' + jarFile;
-                            }
-                        });
+                    const jarFileName = '$JAR_NAME';
+                    
+                    // Update download link
+                    const downloadLink = document.getElementById('download-link');
+                    downloadLink.href = jarFileName;
+                    downloadLink.download = jarFileName;
+                    
+                    // Update run command
+                    const runCommand = document.getElementById('run-command');
+                    runCommand.textContent = 'java -jar ' + jarFileName;
                 });
             </script>
         </body>
