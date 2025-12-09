@@ -1,0 +1,259 @@
+name: CD - Deploy to GitHub Pages
+
+on:
+  workflow_run:
+    workflows: ["CI/CT"]
+    types:
+      - completed
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    permissions:
+      contents: read
+    
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+      
+    - name: Configurar JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+        
+    - name: Compilar y empaquetar JAR
+      run: mvn clean package -DskipTests
+      
+    - name: Subir JAR como artefacto
+      uses: actions/upload-artifact@v4
+      with:
+        name: pacmanGPS-jar
+        path: target/*.jar
+        retention-days: 90
+        
+    - name: Obtener nombre del JAR
+      id: jar-name
+      run: |
+        JAR_FILE=$(ls target/*.jar | xargs -n 1 basename)
+        echo "jar_file=$JAR_FILE" >> $GITHUB_OUTPUT
+        echo "JAR file: $JAR_FILE"
+        
+    - name: Crear landing page
+      run: |
+        mkdir -p pages
+        cat > pages/index.html << EOF
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>PacmanGPS - Descarga</title>
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                
+                body {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    min-height: 100vh;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 20px;
+                }
+                
+                .container {
+                    background: white;
+                    border-radius: 20px;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    padding: 50px;
+                    max-width: 600px;
+                    text-align: center;
+                    animation: fadeIn 0.5s ease-in;
+                }
+                
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                
+                h1 {
+                    color: #333;
+                    font-size: 2.5em;
+                    margin-bottom: 10px;
+                }
+                
+                .emoji {
+                    font-size: 4em;
+                    margin: 20px 0;
+                }
+                
+                p {
+                    color: #666;
+                    font-size: 1.1em;
+                    line-height: 1.6;
+                    margin-bottom: 30px;
+                }
+                
+                .download-btn {
+                    display: inline-block;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    padding: 15px 40px;
+                    border-radius: 50px;
+                    text-decoration: none;
+                    font-size: 1.2em;
+                    font-weight: bold;
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+                }
+                
+                .download-btn:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+                }
+                
+                .info {
+                    margin-top: 30px;
+                    padding: 20px;
+                    background: #f8f9fa;
+                    border-radius: 10px;
+                    color: #555;
+                }
+                
+                .info h3 {
+                    color: #667eea;
+                    margin-bottom: 10px;
+                }
+                
+                .info ul {
+                    list-style: none;
+                    text-align: left;
+                }
+                
+                .info li {
+                    padding: 8px 0;
+                    border-bottom: 1px solid #e0e0e0;
+                }
+                
+                .info li:last-child {
+                    border-bottom: none;
+                }
+                
+                .footer {
+                    margin-top: 30px;
+                    color: #999;
+                    font-size: 0.9em;
+                }
+                
+                .github-link {
+                    color: #667eea;
+                    text-decoration: none;
+                    font-weight: bold;
+                }
+                
+                .github-link:hover {
+                    text-decoration: underline;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="emoji">🎮</div>
+                <h1>PacmanGPS</h1>
+                <p>Juego clásico de Pac-Man desarrollado en Java</p>
+                
+                <a href="${{ steps.jar-name.outputs.jar_file }}" class="download-btn" download>
+                    ⬇️ Descargar JAR
+                </a>
+                
+                <div class="info">
+                    <h3>📋 Requisitos</h3>
+                    <ul>
+                        <li>☕ Java 17 o superior</li>
+                        <li>🖥️ Sistema operativo: Windows, macOS, o Linux</li>
+                    </ul>
+                    
+                    <h3 style="margin-top: 20px;">🚀 Cómo ejecutar</h3>
+                    <ul>
+                        <li>1. Descargar el archivo JAR</li>
+                        <li>2. Abrir terminal en la carpeta de descarga</li>
+                        <li>3. Ejecutar: <code style="background: #e0e0e0; padding: 2px 8px; border-radius: 4px;">java -jar ${{ steps.jar-name.outputs.jar_file }}</code></li>
+                    </ul>
+                </div>
+                
+                <div class="footer">
+                    <p>
+                        Desarrollado con ❤️ por el equipo PacmanGPS<br>
+                        <a href="https://github.com/sergiofm-04/pacmanGPS" class="github-link" target="_blank">
+                            Ver en GitHub
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </body>
+        </html>
+        EOF
+        
+    - name: Copiar JAR a páginas
+      run: cp target/*.jar pages/
+      
+    - name: Subir páginas como artefacto
+      uses: actions/upload-artifact@v4
+      with:
+        name: github-pages
+        path: pages/
+        retention-days: 1
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+    - name: Descargar artefacto de páginas
+      uses: actions/download-artifact@v4.1.3
+      with:
+        name: github-pages
+        path: pages/
+        
+    - name: Configurar GitHub Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Subir artefacto para GitHub Pages
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: pages/
+        
+    - name: Desplegar a GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+      
+    - name: Notificar URL de despliegue
+      run: |
+        echo "✅ Despliegue completado exitosamente"
+        echo "🌐 URL de la landing page: ${{ steps.deployment.outputs.page_url }}"
