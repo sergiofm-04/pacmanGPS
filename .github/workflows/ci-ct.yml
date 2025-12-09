@@ -24,11 +24,8 @@ jobs:
     - name: Instalar dependencias y compilar
       run: mvn clean install -DskipTests
       
-    - name: Ejecutar pruebas unitarias
+    - name: Ejecutar pruebas unitarias y generar reporte de cobertura
       run: mvn test
-      
-    - name: Generar reporte de cobertura
-      run: mvn jacoco:report
       
     - name: Publicar reporte de cobertura como artefacto
       uses: actions/upload-artifact@v4
@@ -45,12 +42,3 @@ jobs:
         name: test-results
         path: target/surefire-reports/
         retention-days: 30
-        
-    - name: Limpiar artefactos temporales
-      if: always()
-      run: |
-        rm -rf target/*.jar
-        rm -rf target/classes
-        rm -rf target/test-classes
-        rm -rf target/maven-archiver
-        rm -rf target/maven-status
