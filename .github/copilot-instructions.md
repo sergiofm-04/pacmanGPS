@@ -28,3 +28,15 @@ PascalCase).
 - Ejecutar pruebas: `mvn test`
 - Ver cobertura: `mvn jacoco:report`
 - Validación completa: `mvn verify` 
+
+## Actions de Integración y Prueba Continua 
+- Ejecuta la acción en cada push y pull request dirigido a las ramas principales (`main`, `develop`).
+- Instala las dependencias y construye el proyecto utilizando Maven (`mvn clean install`).
+- Ejecuta las pruebas unitarias con Maven (`mvn test`).
+- Genera un informe de cobertura de código utilizando JaCoCo con Maven: `mvn jacoco:report`) y publícalo como artefacto del workflow.
+- Si alguna prueba falla, detén el flujo de trabajo y proporciona un informe detallado del error en la salida.
+- Si todas las pruebas pasan, permite la continuación del flujo de trabajo, como despliegue automático si lo hubiera.
+- Utiliza variables de entorno seguras para el manejo de credenciales y claves si las hubiera.
+- Limpia el entorno al finalizar, eliminando archivos temporales y artefactos innecesarios generados durante la ejecución.
+- Notifica el estado final (éxito o error) en el pull request o commit correspondiente mediante comentarios o checks de GitHub.
+- Mantén el archivo `copilot-instructions.md` actualizado para reflejar cualquier cambio relevante en el proceso de integración y prueba continua. 
