@@ -53,6 +53,13 @@ jobs:
         # Get JAR filename and sanitize it (allow only alphanumeric, dots, hyphens, underscores)
         JAR_NAME="${{ steps.jar-name.outputs.jar_file }}"
         JAR_NAME=$(echo "$JAR_NAME" | sed 's/[^a-zA-Z0-9._-]//g')
+        
+        # Validate sanitized filename
+        if [[ ! "$JAR_NAME" =~ \.jar$ ]] || [[ -z "$JAR_NAME" ]]; then
+          echo "Error: Invalid JAR filename after sanitization: $JAR_NAME"
+          exit 1
+        fi
+        
         cat > pages/index.html << EOF
         <!DOCTYPE html>
         <html lang="es">
