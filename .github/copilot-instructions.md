@@ -40,3 +40,4 @@ PascalCase).
 - Limpia el entorno al finalizar, eliminando archivos temporales y artefactos innecesarios generados durante la ejecución.
 - Notifica el estado final (éxito o error) en el pull request o commit correspondiente mediante comentarios o checks de GitHub.
 - Mantén el archivo `copilot-instructions.md` actualizado para reflejar cualquier cambio relevante en el proceso de integración y prueba continua. 
+-  Todos los workflows deben incluir una sección `concurrency` para evitar ejecuciones duplicadas en Pull Requests.
