@@ -182,7 +182,7 @@ jobs:
                 <h1>PacmanGPS</h1>
                 <p>Juego clásico de Pac-Man desarrollado en Java</p>
                 
-                <a href="#" id="download-link" class="download-btn" download>
+                <a href="#" id="download-link" class="download-btn" download data-jar-name="$JAR_NAME">
                     ⬇️ Descargar JAR
                 </a>
                 
@@ -213,14 +213,21 @@ jobs:
             <script>
                 // Set up JAR download link
                 window.addEventListener('DOMContentLoaded', function() {
-                    const jarFileName = '$JAR_NAME';
+                    // Get JAR filename from data attribute (safer than inline script variable)
+                    const downloadLink = document.getElementById('download-link');
+                    const jarFileName = downloadLink.dataset.jarName;
+                    
+                    // Validate filename (basic security check)
+                    if (!jarFileName || !jarFileName.endsWith('.jar')) {
+                        console.error('Invalid JAR filename');
+                        return;
+                    }
                     
                     // Update download link
-                    const downloadLink = document.getElementById('download-link');
                     downloadLink.href = jarFileName;
                     downloadLink.download = jarFileName;
                     
-                    // Update run command
+                    // Update run command using textContent to prevent XSS
                     const runCommand = document.getElementById('run-command');
                     runCommand.textContent = 'java -jar ' + jarFileName;
                 });
