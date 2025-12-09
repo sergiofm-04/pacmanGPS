@@ -50,6 +50,16 @@ jobs:
     - name: Crear landing page
       run: |
         mkdir -p pages
+        # Get JAR filename and sanitize it (allow only alphanumeric, dots, hyphens, underscores)
+        JAR_NAME="${{ steps.jar-name.outputs.jar_file }}"
+        JAR_NAME=$(echo "$JAR_NAME" | sed 's/[^a-zA-Z0-9._-]//g')
+        
+        # Validate sanitized filename
+        if [[ ! "$JAR_NAME" =~ \.jar$ ]] || [[ -z "$JAR_NAME" ]]; then
+          echo "Error: Invalid JAR filename after sanitization: $JAR_NAME"
+          exit 1
+        fi
+        
         cat > pages/index.html << EOF
         <!DOCTYPE html>
         <html lang="es">
@@ -181,7 +191,7 @@ jobs:
                 <h1>PacmanGPS</h1>
                 <p>Juego clásico de Pac-Man desarrollado en Java</p>
                 
-                <a href="${{ steps.jar-name.outputs.jar_file }}" class="download-btn" download>
+                <a href="#" id="download-link" class="download-btn" download data-jar-name="$JAR_NAME">
                     ⬇️ Descargar JAR
                 </a>
                 
@@ -196,7 +206,7 @@ jobs:
                     <ul>
                         <li>1. Descargar el archivo JAR</li>
                         <li>2. Abrir terminal en la carpeta de descarga</li>
-                        <li>3. Ejecutar: <code style="background: #e0e0e0; padding: 2px 8px; border-radius: 4px;">java -jar ${{ steps.jar-name.outputs.jar_file }}</code></li>
+                        <li>3. Ejecutar: <code id="run-command" style="background: #e0e0e0; padding: 2px 8px; border-radius: 4px;">java -jar [nombre-del-jar].jar</code></li>
                     </ul>
                 </div>
                 
@@ -209,6 +219,28 @@ jobs:
                     </p>
                 </div>
             </div>
+            <script>
+                // Set up JAR download link
+                window.addEventListener('DOMContentLoaded', function() {
+                    // Get JAR filename from data attribute (safer than inline script variable)
+                    const downloadLink = document.getElementById('download-link');
+                    const jarFileName = downloadLink.dataset.jarName;
+                    
+                    // Validate filename (basic security check)
+                    if (!jarFileName || !jarFileName.endsWith('.jar')) {
+                        console.error('Invalid JAR filename');
+                        return;
+                    }
+                    
+                    // Update download link
+                    downloadLink.href = jarFileName;
+                    downloadLink.download = jarFileName;
+                    
+                    // Update run command using textContent to prevent XSS
+                    const runCommand = document.getElementById('run-command');
+                    runCommand.textContent = 'java -jar ' + jarFileName;
+                });
+            </script>
         </body>
         </html>
         EOF
@@ -219,7 +251,7 @@ jobs:
     - name: Subir páginas como artefacto
       uses: actions/upload-artifact@v4
       with:
-        name: github-pages
+        name: pages-content
         path: pages/
         retention-days: 1
 
@@ -238,7 +270,7 @@ jobs:
     - name: Descargar artefacto de páginas
       uses: actions/download-artifact@v4.1.3
       with:
-        name: github-pages
+        name: pages-content
         path: pages/
         
     - name: Configurar GitHub Pages
