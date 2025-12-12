@@ -141,8 +141,9 @@ El proyecto implementa **despliegue automático a GitHub Pages** con una landing
 2. 🌐 **Despliegue**: Publica el sitio en GitHub Pages
 3. 📢 **Notificación**: Reporta la URL de la landing page
 
-**Resultado**: Landing page accesible en:
-### 🌐 [https://sergiofm-04.github.io/pacmanGPS/](https://sergiofm-04.github.io/pacmanGPS/)
+**Resultado**: 
+
+🌐 **Landing page accesible en: [https://sergiofm-04.github.io/pacmanGPS/](https://sergiofm-04.github.io/pacmanGPS/)**
 
 Desde la landing page puedes:
 - 📥 Descargar el último JAR compilado
